@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard1.3;net46</TargetFrameworks>
+    <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
   <Import Project="..\Package.props" />
@@ -14,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Correlate" Version="2.4.0" />
-    <PackageReference Include="Rebus" Version="5.0.0" />
+    <PackageReference Include="Rebus" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

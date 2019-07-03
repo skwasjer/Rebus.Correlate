@@ -7,7 +7,7 @@ namespace Rebus.Correlate.Fixtures
 {
 	public sealed class RebusServiceProviderFixture : RebusFixture, IDisposable
 	{
-		private readonly ServiceProvider _serviceProvider;
+		private readonly IServiceProvider _serviceProvider;
 
 		public RebusServiceProviderFixture()
 		{
@@ -25,7 +25,7 @@ namespace Rebus.Correlate.Fixtures
 
 		public void Dispose()
 		{
-			_serviceProvider?.Dispose();
+			(_serviceProvider as IDisposable)?.Dispose();
 		}
 	}
 }

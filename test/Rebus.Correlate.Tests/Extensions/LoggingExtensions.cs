@@ -5,17 +5,12 @@ namespace Rebus.Correlate.Extensions
 {
 	public static class LoggingExtensions
 	{
-#if NETSTANDARD1_3 || NETFRAMEWORK
+#if NETCOREAPP1_1 || NETFRAMEWORK
 		public static IServiceCollection ForceEnableLogging(this IServiceCollection services)
 		{
 			return services
-				.AddLogging()
-				.AddLoggingProvider(new TestLoggerProvider());
-		}
-
-		private static IServiceCollection AddLoggingProvider(this IServiceCollection services, ILoggerProvider loggerProvider)
-		{
-			return services.AddSingleton(loggerProvider);
+				.AddSingleton(s => new LoggerFactory().ForceEnableLogging())
+				.AddLogging();
 		}
 #else
 		public static IServiceCollection ForceEnableLogging(this IServiceCollection services)

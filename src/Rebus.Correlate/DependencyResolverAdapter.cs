@@ -35,13 +35,17 @@ namespace Rebus.Correlate
 			return service;
 		}
 
+#if NETSTANDARD2_0 || NETFRAMEWORK
 		[ExcludeFromCodeCoverage]
+#endif
 		bool IResolutionContext.Has<TService>(bool primary)
 		{
 			throw new NotImplementedException();
 		}
 
+#if NETSTANDARD2_0 || NETFRAMEWORK
 		[ExcludeFromCodeCoverage]
+#endif
 		IEnumerable IResolutionContext.TrackedInstances => throw new NotImplementedException();
 	}
 }

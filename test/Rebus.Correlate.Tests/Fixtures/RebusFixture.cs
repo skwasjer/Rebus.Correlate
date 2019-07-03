@@ -4,7 +4,9 @@ using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Persistence.InMem;
 using Rebus.Routing.TypeBased;
+#if REBUS_5
 using Rebus.Startup;
+#endif
 using Rebus.Transport.InMem;
 
 namespace Rebus.Correlate.Fixtures
@@ -26,7 +28,11 @@ namespace Rebus.Correlate.Fixtures
 		public BuiltinHandlerActivator Start()
 		{
 			var activator = new BuiltinHandlerActivator();
+#if REBUS_5
 			ConfigureRebus(activator).Create().Start();
+#else
+			ConfigureRebus(activator).Start();
+#endif
 			return activator;
 		}
 
