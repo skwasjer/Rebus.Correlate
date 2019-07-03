@@ -1,6 +1,5 @@
 ﻿using System;
 using Correlate;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Rebus.Config;
 using Rebus.Correlate.Steps;
@@ -56,9 +55,9 @@ namespace Rebus.Correlate
 				)
 			);
 
-			RegisterSteps(configurer);
-
-			return ConfigurePipeline(configurer);
+			return configurer
+				.RegisterSteps()
+				.ConfigurePipeline();
 		}
 
 		/// <summary>
@@ -74,7 +73,7 @@ namespace Rebus.Correlate
 				throw new ArgumentNullException(nameof(serviceProvider));
 			}
 
-			return configurer.EnableCorrelate(new DependencyResolverAdapter(serviceProvider.GetRequiredService));
+			return configurer.EnableCorrelate(new DependencyResolverAdapter(serviceProvider.GetService));
 		}
 
 		/// <summary>
@@ -96,12 +95,12 @@ namespace Rebus.Correlate
 			}
 
 			// Register Correlate steps using custom resolver.
-			RegisterSteps(configurer, dependencyResolverAdapter);
-
-			return ConfigurePipeline(configurer);
+			return configurer
+				.RegisterSteps(dependencyResolverAdapter)
+				.ConfigurePipeline();
 		}
 
-		private static OptionsConfigurer RegisterSteps(OptionsConfigurer configurer, IResolutionContext resolver = null)
+		private static OptionsConfigurer RegisterSteps(this OptionsConfigurer configurer, IResolutionContext resolver = null)
 		{
 			configurer.Register(ctx =>
 				new CorrelateOutgoingMessageStep(
@@ -120,7 +119,7 @@ namespace Rebus.Correlate
 			return configurer;
 		}
 
-		private static OptionsConfigurer ConfigurePipeline(OptionsConfigurer configurer)
+		private static OptionsConfigurer ConfigurePipeline(this OptionsConfigurer configurer)
 		{
 			configurer.Decorate<IPipeline>(ctx =>
 			{

@@ -6,19 +6,19 @@ using Rebus.Injection;
 namespace Rebus.Correlate
 {
 	/// <summary>
-	/// Simple dependency resolver adapter using func to resolve Correlate dependencies.
+	/// Simple dependency resolver adapter using func for Rebus to resolve Correlate dependencies.
 	/// </summary>
 	public class DependencyResolverAdapter : IResolutionContext
 	{
-		private readonly Func<Type, object> _resolver;
+		private readonly Func<Type, object> _optionalResolve;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DependencyResolverAdapter"/> class using specified <paramref name="resolver"/> func.
+		/// Initializes a new instance of the <see cref="DependencyResolverAdapter"/> class using specified <paramref name="optionalResolve"/> func.
 		/// </summary>
-		/// <param name="resolver">The resolver func that resolves a service type.</param>
-		public DependencyResolverAdapter(Func<Type, object> resolver)
+		/// <param name="optionalResolve">The resolver func that resolves optional services by type.</param>
+		public DependencyResolverAdapter(Func<Type, object> optionalResolve)
 		{
-			_resolver = resolver ?? throw new ArgumentNullException(nameof(resolver));
+			_optionalResolve = optionalResolve ?? throw new ArgumentNullException(nameof(optionalResolve));
 		}
 
 		/// <summary>
@@ -26,13 +26,21 @@ namespace Rebus.Correlate
 		/// </summary>
 		public TService Get<TService>()
 		{
-			var service = (TService)_resolver(typeof(TService));
+			var service = GetOrNull<TService>();
 			if (service == null)
 			{
 				throw new InvalidOperationException($"Correlate can not be enabled, the service '{typeof(TService).FullName}' can not be resolved.");
 			}
 
 			return service;
+		}
+
+		/// <summary>
+		/// Gets an instance of the specified <typeparamref name="TService" />.
+		/// </summary>
+		public TService GetOrNull<TService>()
+		{
+			return (TService)_optionalResolve(typeof(TService));
 		}
 
 #if NETSTANDARD2_0 || NETFRAMEWORK

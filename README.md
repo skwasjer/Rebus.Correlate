@@ -65,7 +65,23 @@ services
   .AddCorrelate()
   .AddRebus((configure, serviceProvider) => configure
     .Options(o => o.EnableCorrelate(serviceProvider))
+    .(...)
   );
+```
+
+### Using a custom DI adapter
+
+For example, provided the Correlate dependencies are registered with Autofac:
+
+```csharp
+var builder = new ContainerBuilder();
+... // Register Correlate dependencies.
+var container = builder.Build();
+var scope = container.BeginLifetimeScope(); // Dispose on app shutdown.
+
+Configure.With(....)
+    .Options(o => o.EnableCorrelate(new DependencyResolverAdapter(scope.ResolveOptional)))
+    .(...)
 ```
 
 ## Send/publish message in an ambient correlation context scope
