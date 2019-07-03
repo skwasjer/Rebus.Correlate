@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using Correlate;
+using Rebus.Logging;
 using Rebus.Messages;
 using Rebus.Pipeline;
 using Rebus.Transport;
@@ -13,11 +14,14 @@ namespace Rebus.Correlate.Steps
 	{
 		private readonly ICorrelationContextAccessor _correlationContextAccessor;
 		private readonly ICorrelationIdFactory _correlationIdFactory;
+		private readonly ILog _logger;
 
-		public CorrelateOutgoingMessageStep(ICorrelationContextAccessor correlationContextAccessor, ICorrelationIdFactory correlationIdFactory)
+		public CorrelateOutgoingMessageStep(ICorrelationContextAccessor correlationContextAccessor, ICorrelationIdFactory correlationIdFactory, IRebusLoggerFactory rebusLoggerFactory)
 		{
 			_correlationContextAccessor = correlationContextAccessor ?? throw new ArgumentNullException(nameof(correlationContextAccessor));
 			_correlationIdFactory = correlationIdFactory ?? throw new ArgumentNullException(nameof(correlationIdFactory));
+
+			_logger = rebusLoggerFactory.GetLogger<CorrelateOutgoingMessageStep>();
 		}
 
 		public Task Process(OutgoingStepContext context, Func<Task> next)
@@ -37,6 +41,8 @@ namespace Rebus.Correlate.Steps
 				}
 
 				message.Headers[Headers.CorrelationSequence] = correlationSequence.ToString(CultureInfo.InvariantCulture);
+
+				_logger.Debug("Correlation ID: {CorrelationId}, sequence: {CorrelationSequence}", correlationId, correlationSequence);
 			}
 
 			return next();

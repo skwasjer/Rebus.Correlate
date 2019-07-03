@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Rebus.Config;
 using Rebus.Correlate.Steps;
 using Rebus.Injection;
+using Rebus.Logging;
 using Rebus.Pipeline;
 using Rebus.Pipeline.Receive;
 using Rebus.Pipeline.Send;
@@ -105,12 +106,14 @@ namespace Rebus.Correlate
 			configurer.Register(ctx =>
 				new CorrelateOutgoingMessageStep(
 					(resolver ?? ctx).Get<ICorrelationContextAccessor>(),
-					(resolver ?? ctx).Get<ICorrelationIdFactory>()
+					(resolver ?? ctx).Get<ICorrelationIdFactory>(),
+					ctx.Get<IRebusLoggerFactory>()
 				)
 			);
 			configurer.Register(ctx =>
 				new CorrelateIncomingMessageStep(
-					(resolver ?? ctx).Get<CorrelationManager>()
+					(resolver ?? ctx).Get<CorrelationManager>(),
+					ctx.Get<IRebusLoggerFactory>()
 				)
 			);
 
