@@ -150,10 +150,13 @@ public class MyHandler : IHandleMessages<MyMessage>
 
 ### Supported .NET targets
 - .NET Standard 2.0
+- .NET Standard 1.3
+- .NET Framework 4.6
 
 ### Build requirements
 - Visual Studio 2017
 - .NET Core 2.2/2.1 SDK
+- .NET 4.6 targetting pack
 
 #### Contributions
 PR's are welcome. Please rebase before submitting, provide test coverage, and ensure the AppVeyor build passes. I will not consider PR's otherwise.
