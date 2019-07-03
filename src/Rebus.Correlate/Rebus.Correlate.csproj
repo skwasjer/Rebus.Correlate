@@ -8,8 +8,7 @@
 
   <PropertyGroup>
     <Description>Rebus integration of Correlate to correlate message flow via any supported Rebus transport.</Description>
-    <PackageProjectUrl>https://github.com/skwasjer/Correlate</PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
+    <PackageProjectUrl>https://github.com/skwasjer/Rebus.Correlate</PackageProjectUrl>
     <PackageTags>rebus, transport, correlationid, correlation, correlate, causation</PackageTags>
   </PropertyGroup>
 
