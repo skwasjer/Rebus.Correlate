@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <Import Project="..\Package.props" />
+
+  <PropertyGroup>
+    <Description>Rebus integration of Correlate to correlate message flow via any supported Rebus transport.</Description>
+    <PackageProjectUrl>https://github.com/skwasjer/Correlate</PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageTags>rebus, transport, correlationid, correlation, correlate, causation</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Correlate" Version="2.4.0" />
+    <PackageReference Include="Rebus" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>
