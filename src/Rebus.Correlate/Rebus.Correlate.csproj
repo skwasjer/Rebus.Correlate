@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Correlate" Version="2.4.0" />
+    <PackageReference Include="Correlate" Version="3.0.0" />
     <PackageReference Include="Rebus" Version="4.3.0" />
   </ItemGroup>
 

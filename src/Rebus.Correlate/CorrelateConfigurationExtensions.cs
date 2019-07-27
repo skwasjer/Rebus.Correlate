@@ -46,7 +46,7 @@ namespace Rebus.Correlate
 					ctx.Get<ICorrelationContextAccessor>()
 				)
 			);
-			configurer.Register(ctx =>
+			configurer.Register<IAsyncCorrelationManager>(ctx =>
 				new CorrelationManager(
 					ctx.Get<ICorrelationContextFactory>(),
 					ctx.Get<ICorrelationIdFactory>(),
@@ -111,7 +111,7 @@ namespace Rebus.Correlate
 			);
 			configurer.Register(ctx =>
 				new CorrelateIncomingMessageStep(
-					(resolver ?? ctx).Get<CorrelationManager>(),
+					(resolver ?? ctx).Get<IAsyncCorrelationManager>(),
 					ctx.Get<IRebusLoggerFactory>()
 				)
 			);

@@ -10,12 +10,12 @@ namespace Rebus.Correlate.Steps
 	[StepDocumentation("Sets ambient 'Correlate.CorrelationContext' based on Correlation ID in incoming message header. If no header is found, a new Correlation ID is generated.")]
 	internal class CorrelateIncomingMessageStep : IIncomingStep
 	{
-		private readonly CorrelationManager _correlationManager;
+		private readonly IAsyncCorrelationManager _asyncCorrelationManager;
 		private readonly ILog _logger;
 
-		public CorrelateIncomingMessageStep(CorrelationManager correlationManager, IRebusLoggerFactory rebusLoggerFactory)
+		public CorrelateIncomingMessageStep(IAsyncCorrelationManager asyncCorrelationManager, IRebusLoggerFactory rebusLoggerFactory)
 		{
-			_correlationManager = correlationManager ?? throw new ArgumentNullException(nameof(correlationManager));
+			_asyncCorrelationManager = asyncCorrelationManager ?? throw new ArgumentNullException(nameof(asyncCorrelationManager));
 
 			_logger = rebusLoggerFactory.GetLogger<CorrelateIncomingMessageStep>();
 		}
@@ -29,7 +29,7 @@ namespace Rebus.Correlate.Steps
 				_logger.Debug("Correlation ID: {CorrelationId}", correlationId);
 			}
 			// If id is null, we just let manager assign new one.
-			return _correlationManager.CorrelateAsync(correlationId, next);
+			return _asyncCorrelationManager.CorrelateAsync(correlationId, next);
 		}
 	}
 }
