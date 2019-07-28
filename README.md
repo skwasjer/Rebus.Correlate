@@ -146,6 +146,7 @@ public class MyHandler : IHandleMessages<MyMessage>
 }
 ```
 
+> Do not keep a reference to the `CorrelationContext`, always use the `ICorrelationContextAccessor` to get the current context.
 
 ## More info
 
