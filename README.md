@@ -91,12 +91,12 @@ This example illustrates how messages that are sent/published, inherit the Corre
 ```csharp
 public class MyService
 {
-  private CorrelationManager _correlationManager;
+  private IAsyncCorrelationManager _asyncCorrelationManager;
   private IBus _bus;
 
-  public MyService(CorrelationManager correlationManager, IBus bus)
+  public MyService(IAsyncCorrelationManager asyncCorrelationManager, IBus bus)
   {
-    _correlationManager = _correlationManager;
+    _asyncCorrelationManager = asyncCorrelationManager;
     _bus = bus;
   }
 
@@ -107,17 +107,17 @@ public class MyService
     await _bus.Publish(new DoWorkCalledEvent());
 
     // Perform work in new correlation context.
-    await _correlationManager.CorrelateAsync(async () =>
+    await _asyncCorrelationManager.CorrelateAsync(async () =>
       {
-        // This event will be published with the Correlation ID from
+        // This command will be sent with the Correlation ID from
         // the ambient correlation context.
-        await _bus.Publish(new WorkStartedEvent());
+        await _bus.Send(new DoSomethingCommandElse());
 
         // Do other work in ambient correlation context,
         // like call other microservice (using Correlate support)
         // ...
 
-        // This message will be published with the same Correlation ID.
+        // This event will be published with the same Correlation ID.
         await _bus.Publish(new WorkFinishedEvent());
       });
   }
