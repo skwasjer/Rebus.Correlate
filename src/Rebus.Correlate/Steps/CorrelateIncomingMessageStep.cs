@@ -17,7 +17,7 @@ namespace Rebus.Correlate.Steps
 		{
 			_asyncCorrelationManager = asyncCorrelationManager ?? throw new ArgumentNullException(nameof(asyncCorrelationManager));
 
-			_logger = rebusLoggerFactory.GetLogger<CorrelateIncomingMessageStep>();
+			_logger = (rebusLoggerFactory ?? new NullLoggerFactory()).GetLogger<CorrelateIncomingMessageStep>();
 		}
 
 		public Task Process(IncomingStepContext context, Func<Task> next)

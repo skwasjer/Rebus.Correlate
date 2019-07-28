@@ -45,6 +45,46 @@ namespace Rebus.Correlate.Steps
 		}
 
 		[Fact]
+		public void When_creating_instance_without_correlationContextAccessor_it_should_throw()
+		{
+			ICorrelationContextAccessor correlationContextAccessor = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			// ReSharper disable once ObjectCreationAsStatement
+			Action act = () => new CorrelateOutgoingMessageStep(correlationContextAccessor, _correlationIdFactoryMock.Object, new NullLoggerFactory());
+
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(correlationContextAccessor));
+		}
+
+		[Fact]
+		public void When_creating_instance_without_loggerFactory_it_should_not_throw()
+		{
+			IRebusLoggerFactory rebusLoggerFactory = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			// ReSharper disable once ObjectCreationAsStatement
+			Action act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock.Object, rebusLoggerFactory);
+
+			// Assert
+			act.Should().NotThrow();
+		}
+
+		[Fact]
+		public void When_creating_instance_without_correlationIdFactory_it_should_throw()
+		{
+			ICorrelationIdFactory correlationIdFactory = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			// ReSharper disable once ObjectCreationAsStatement
+			Action act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, correlationIdFactory, new NullLoggerFactory());
+
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(correlationIdFactory));
+		}
+
+		[Fact]
 		public async Task Given_message_already_has_a_correlation_id_stored_it_should_ignore_setting_correlation_id()
 		{
 			const string correlationId = nameof(correlationId);

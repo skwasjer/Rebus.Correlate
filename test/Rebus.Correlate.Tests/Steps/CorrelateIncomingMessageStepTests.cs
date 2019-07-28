@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Correlate;
+using FluentAssertions;
 using Moq;
 using Rebus.Logging;
 using Rebus.Messages;
@@ -38,6 +39,32 @@ namespace Rebus.Correlate.Steps
 			_next = () => Task.CompletedTask;
 
 			_sut = new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock.Object, new NullLoggerFactory());
+		}
+
+		[Fact]
+		public void When_creating_instance_without_asyncCorrelationManager_it_should_throw()
+		{
+			IAsyncCorrelationManager asyncCorrelationManager = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			// ReSharper disable once ObjectCreationAsStatement
+			Action act = () => new CorrelateIncomingMessageStep(asyncCorrelationManager, new NullLoggerFactory());
+
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(asyncCorrelationManager));
+		}
+
+		[Fact]
+		public void When_creating_instance_without_loggerFactory_it_should_not_throw()
+		{
+			IRebusLoggerFactory rebusLoggerFactory = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			// ReSharper disable once ObjectCreationAsStatement
+			Action act = () => new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock.Object, rebusLoggerFactory);
+
+			// Assert
+			act.Should().NotThrow();
 		}
 
 		[Fact]

@@ -21,7 +21,7 @@ namespace Rebus.Correlate.Steps
 			_correlationContextAccessor = correlationContextAccessor ?? throw new ArgumentNullException(nameof(correlationContextAccessor));
 			_correlationIdFactory = correlationIdFactory ?? throw new ArgumentNullException(nameof(correlationIdFactory));
 
-			_logger = rebusLoggerFactory.GetLogger<CorrelateOutgoingMessageStep>();
+			_logger = (rebusLoggerFactory ?? new NullLoggerFactory()).GetLogger<CorrelateOutgoingMessageStep>();
 		}
 
 		public Task Process(OutgoingStepContext context, Func<Task> next)
