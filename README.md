@@ -125,6 +125,8 @@ public class MyService
 }
 ```
 
+> Note: when using Correlate integration for ASP.NET Core, each request is already scoped to a correlation context, and so there is no need to wrap the send/publish of messages with `IAsyncCorrelationManager`/`ICorrelationManager`.
+
 ## Handle message in an ambient correlation context scope
 
 With Correlate enabled, any incoming message is handled in its own ambient correlation context automatically. If you wish to access the Correlation ID, inject the `ICorrelationContextAccessor` into your handler.
@@ -149,6 +151,8 @@ public class MyHandler : IHandleMessages<MyMessage>
 > Do not keep a reference to the `CorrelationContext`, always use the `ICorrelationContextAccessor` to get the current context.
 
 ## More info
+
+See [Correlate](https://github.com/skwasjer/Correlate) documentation for further integration with ASP.NET Core, `IHttpClientFactory` and for other extensions/libraries.
 
 ### Supported .NET targets
 - .NET Standard 2.0
