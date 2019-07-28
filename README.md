@@ -62,12 +62,12 @@ Add package dependencies:
 
 ```csharp
 services
-  .AddLogging(logging => logging.AddConsole())
-  .AddCorrelate()
-  .AddRebus((configure, serviceProvider) => configure
-    .Options(o => o.EnableCorrelate(serviceProvider))
-    .(...)
-  );
+    .AddLogging(logging => logging.AddConsole())
+    .AddCorrelate()
+    .AddRebus((configure, serviceProvider) => configure
+        .Options(o => o.EnableCorrelate(serviceProvider))
+        .(...)
+    );
 ```
 
 ### Using a custom DI adapter
@@ -92,36 +92,36 @@ This example illustrates how messages that are sent/published, inherit the Corre
 ```csharp
 public class MyService
 {
-  private IAsyncCorrelationManager _asyncCorrelationManager;
-  private IBus _bus;
+    private IAsyncCorrelationManager _asyncCorrelationManager;
+    private IBus _bus;
 
-  public MyService(IAsyncCorrelationManager asyncCorrelationManager, IBus bus)
-  {
-    _asyncCorrelationManager = asyncCorrelationManager;
-    _bus = bus;
-  }
+    public MyService(IAsyncCorrelationManager asyncCorrelationManager, IBus bus)
+    {
+        _asyncCorrelationManager = asyncCorrelationManager;
+        _bus = bus;
+    }
 
-  public async Task DoWork()
-  {
-    // Without ambient correlation context, the message is still published 
-    // with a Correlation ID, but it is generated specifically for this message.
-    await _bus.Publish(new DoWorkCalledEvent());
+    public async Task DoWork()
+    {
+        // Without ambient correlation context, the message is still published 
+        // with a Correlation ID, but it is generated specifically for this message.
+        await _bus.Publish(new DoWorkCalledEvent());
 
-    // Perform work in new correlation context.
-    await _asyncCorrelationManager.CorrelateAsync(async () =>
-      {
-        // This command will be sent with the Correlation ID from
-        // the ambient correlation context.
-        await _bus.Send(new DoSomethingElseCommand());
+        // Perform work in new correlation context.
+        await _asyncCorrelationManager.CorrelateAsync(async () =>
+        {
+            // This command will be sent with the Correlation ID from
+            // the ambient correlation context.
+            await _bus.Send(new DoSomethingElseCommand());
 
-        // Do other work in ambient correlation context,
-        // like call other microservice (using Correlate support)
-        // ...
+            // Do other work in ambient correlation context,
+            // like call other microservice (using Correlate support)
+            // ...
 
-        // This event will be published with the same Correlation ID.
-        await _bus.Publish(new WorkFinishedEvent());
-      });
-  }
+            // This event will be published with the same Correlation ID.
+            await _bus.Publish(new WorkFinishedEvent());
+        });
+    }
 }
 ```
 
@@ -132,17 +132,17 @@ With Correlate enabled, any incoming message is handled in its own ambient corre
 ```csharp
 public class MyHandler : IHandleMessages<MyMessage>
 {
-  private ICorrelationContextAccessor _correlationContextAccessor;
+    private ICorrelationContextAccessor _correlationContextAccessor;
 
-  public MyHandler(ICorrelationContextAccessor correlationContextAccessor)
-  {
-    _correlationContextAccessor = correlationContextAccessor;
-  }
+    public MyHandler(ICorrelationContextAccessor correlationContextAccessor)
+    {
+        _correlationContextAccessor = correlationContextAccessor;
+    }
 
-  public Task Handle(MyMessage message)
-  {
-    string correlationId = _correlationContextAccessor.CorrelationContext.CorrelationId; 
-  }
+    public Task Handle(MyMessage message)
+    {
+        string correlationId = _correlationContextAccessor.CorrelationContext.CorrelationId; 
+    }
 }
 ```
 
