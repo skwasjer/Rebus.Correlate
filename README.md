@@ -112,7 +112,7 @@ public class MyService
       {
         // This command will be sent with the Correlation ID from
         // the ambient correlation context.
-        await _bus.Send(new DoSomethingCommandElse());
+        await _bus.Send(new DoSomethingElseCommand());
 
         // Do other work in ambient correlation context,
         // like call other microservice (using Correlate support)
