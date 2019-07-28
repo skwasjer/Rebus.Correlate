@@ -17,6 +17,20 @@ namespace Rebus.Correlate
 		}
 
 		[Fact]
+		public void When_creating_instance_without_func_it_should_throw()
+		{
+			Func<Type, object> optionalResolve = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			// ReSharper disable once ObjectCreationAsStatement
+			Action act = () => new DependencyResolverAdapter(optionalResolve);
+
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(optionalResolve));
+		}
+
+		[Fact]
 		public void Given_dependency_is_not_registered_when_resolving_optional_should_return_null()
 		{
 			_optionalResolve = type => null;
