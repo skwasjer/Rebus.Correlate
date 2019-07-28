@@ -14,6 +14,7 @@ dotnet add package Rebus.Correlate
 
 [![Build status](https://ci.appveyor.com/api/projects/status/wtyl9fs7o38i2set/branch/master?svg=true)](https://ci.appveyor.com/project/skwasjer/rebus-correlate)
 [![Tests](https://img.shields.io/appveyor/tests/skwasjer/rebus-correlate/master.svg)](https://ci.appveyor.com/project/skwasjer/rebus-correlate/build/tests)
+[![codecov](https://codecov.io/gh/skwasjer/Rebus.Correlate/branch/master/graph/badge.svg)](https://codecov.io/gh/skwasjer/Rebus.Correlate)
 
 | | | |
 |---|---|---|
