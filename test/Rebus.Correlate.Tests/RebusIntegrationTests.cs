@@ -14,6 +14,7 @@ namespace Rebus.Correlate
 {
 	public abstract class RebusIntegrationTests : IDisposable
 	{
+		private readonly RebusFixture _fixture;
 		private readonly BuiltinHandlerActivator _activator;
 		private readonly IBus _bus;
 
@@ -24,7 +25,8 @@ namespace Rebus.Correlate
 
 		public RebusIntegrationTests(RebusFixture fixture)
 		{
-			_activator = fixture.Start();
+			_fixture = fixture;
+			_activator = fixture.CreateActivator();
 			_bus = _activator.Bus;
 
 			_correlationContextAccessor = new CorrelationContextAccessor();
@@ -48,6 +50,7 @@ namespace Rebus.Correlate
 			const string expectedResult = "01234" + correlationId;
 
 			ArrangeHandler(maxSequence, (message, sequence) => _bus.Send(message.Extend(sequence)));
+			_fixture.Start();
 
 			// Act
 			await _correlationManager.CorrelateAsync(correlationId, () => _bus.Send(new TestMessage()));
@@ -64,6 +67,7 @@ namespace Rebus.Correlate
 			const string expectedResultBegin = "01234";
 
 			ArrangeHandler(maxSequence, (message, sequence) => _bus.Send(message.Extend(sequence)));
+			_fixture.Start();
 
 			// Act
 			await _bus.Send(new TestMessage());
@@ -83,6 +87,7 @@ namespace Rebus.Correlate
 
 			await _bus.Subscribe<TestMessage>();
 			ArrangeHandler(maxSequence, (message, sequence) => _bus.Publish(message.Extend(sequence)));
+			_fixture.Start();
 
 			// Act
 			try
@@ -107,6 +112,7 @@ namespace Rebus.Correlate
 
 			await _bus.Subscribe<TestMessage>();
 			ArrangeHandler(maxSequence, (message, sequence) => _bus.Publish(message.Extend(sequence)));
+			_fixture.Start();
 
 			// Act
 			try

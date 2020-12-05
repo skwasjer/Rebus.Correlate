@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rebus.Activation;
+using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Persistence.InMem;
 using Rebus.Routing.TypeBased;
-#if REBUS_5
-using Rebus.Startup;
-#endif
 using Rebus.Transport.InMem;
 
 namespace Rebus.Correlate.Fixtures
@@ -14,6 +12,7 @@ namespace Rebus.Correlate.Fixtures
 	public abstract class RebusFixture
 	{
 		private readonly List<Action<RebusConfigurer>> _configureActions = new List<Action<RebusConfigurer>>();
+		private IBusStarter _busStarter;
 
 		public RebusFixture()
 		{
@@ -25,15 +24,16 @@ namespace Rebus.Correlate.Fixtures
 			);
 		}
 
-		public BuiltinHandlerActivator Start()
+		public BuiltinHandlerActivator CreateActivator()
 		{
 			var activator = new BuiltinHandlerActivator();
-#if REBUS_5
-			ConfigureRebus(activator).Create().Start();
-#else
-			ConfigureRebus(activator).Start();
-#endif
+			_busStarter = ConfigureRebus(activator).Create();
 			return activator;
+		}
+
+		public IBus Start()
+		{
+			return _busStarter.Start();
 		}
 
 		protected void Configure(Action<RebusConfigurer> configureRebus)
