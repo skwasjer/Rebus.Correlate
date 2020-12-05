@@ -26,32 +26,34 @@ namespace Rebus.Correlate.Steps
 
 		public Task Process(OutgoingStepContext context, Func<Task> next)
 		{
-			var message = context.Load<Message>();
-			if (!message.Headers.ContainsKey(Headers.CorrelationId))
+			Message message = context.Load<Message>();
+			if (message.Headers.ContainsKey(Headers.CorrelationId))
 			{
-				string correlationId = _correlationContextAccessor.CorrelationContext?.CorrelationId ?? _correlationIdFactory.Create();
-				message.Headers[Headers.CorrelationId] = correlationId;
-
-				int correlationSequence = 0;
-				var transactionContext = context.Load<ITransactionContext>();
-				var incomingStepContext = transactionContext.GetOrNull<IncomingStepContext>(StepContext.StepContextKey);
-				if (incomingStepContext != null)
-				{
-					correlationSequence = GetCorrelationSequence(incomingStepContext) + 1;
-				}
-
-				message.Headers[Headers.CorrelationSequence] = correlationSequence.ToString(CultureInfo.InvariantCulture);
-
-				_logger.Debug("Correlation ID: {CorrelationId}, sequence: {CorrelationSequence}", correlationId, correlationSequence);
+				return next();
 			}
+
+			string correlationId = _correlationContextAccessor.CorrelationContext?.CorrelationId ?? _correlationIdFactory.Create();
+			message.Headers[Headers.CorrelationId] = correlationId;
+
+			int correlationSequence = 0;
+			ITransactionContext transactionContext = context.Load<ITransactionContext>();
+			IncomingStepContext incomingStepContext = transactionContext.GetOrNull<IncomingStepContext>(StepContext.StepContextKey);
+			if (incomingStepContext != null)
+			{
+				correlationSequence = GetCorrelationSequence(incomingStepContext) + 1;
+			}
+
+			message.Headers[Headers.CorrelationSequence] = correlationSequence.ToString(CultureInfo.InvariantCulture);
+
+			_logger.Debug("Correlation ID: {CorrelationId}, sequence: {CorrelationSequence}", correlationId, correlationSequence);
 
 			return next();
 		}
 
 		private static int GetCorrelationSequence(StepContext stepContext)
 		{
-			var message = stepContext.Load<Message>();
-			if (!message.Headers.TryGetValue(Headers.CorrelationSequence, out string strValue)
+			Message message = stepContext.Load<Message>();
+			if (!message.Headers.TryGetValue(Headers.CorrelationSequence, out string? strValue)
 				|| string.IsNullOrEmpty(strValue))
 			{
 				return 0;

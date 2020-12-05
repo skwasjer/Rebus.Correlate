@@ -35,7 +35,7 @@ namespace Rebus.Correlate.Extensions
 
 			public ILogger CreateLogger(string categoryName)
 			{
-				return _testLogger ?? (_testLogger = new TestLogger());
+				return _testLogger ??= new TestLogger();
 			}
 		}
 	}

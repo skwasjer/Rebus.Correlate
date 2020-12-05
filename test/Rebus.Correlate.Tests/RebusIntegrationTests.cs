@@ -40,6 +40,7 @@ namespace Rebus.Correlate
 			_tcs.TrySetCanceled();
 			_bus?.Dispose();
 			_activator?.Dispose();
+			GC.SuppressFinalize(this);
 		}
 
 		[Fact]
