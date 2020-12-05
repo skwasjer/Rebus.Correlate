@@ -1,0 +1,9 @@
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+  </PropertyGroup>
+
+</Project>

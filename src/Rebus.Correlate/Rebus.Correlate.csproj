@@ -3,10 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard1.3;net46</TargetFrameworks>
     <IsTestProject>false</IsTestProject>
-    <DebugType>full</DebugType>
   </PropertyGroup>
-
-  <Import Project="..\Package.props" />
 
   <PropertyGroup>
     <Description>Rebus integration of Correlate to correlate message flow via any supported Rebus transport.</Description>
