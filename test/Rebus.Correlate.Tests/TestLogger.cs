@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions.Internal;
 
 namespace Rebus.Correlate
 {
@@ -33,6 +32,19 @@ namespace Rebus.Correlate
 		public IDisposable BeginScope<TState>(TState state)
 		{
 			return NullScope.Instance;
+		}
+
+		private class NullScope : IDisposable
+		{
+			private NullScope()
+			{
+			}
+
+			public static IDisposable Instance { get; } = new NullScope();
+
+			public void Dispose()
+			{
+			}
 		}
 	}
 }

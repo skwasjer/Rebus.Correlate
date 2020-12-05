@@ -5,7 +5,7 @@ namespace Rebus.Correlate.Extensions
 {
 	public static class LoggingExtensions
 	{
-#if NETCOREAPP1_1 || NETFRAMEWORK
+#if NETFRAMEWORK
 		public static IServiceCollection ForceEnableLogging(this IServiceCollection services)
 		{
 			return services
@@ -35,7 +35,7 @@ namespace Rebus.Correlate.Extensions
 
 			public ILogger CreateLogger(string categoryName)
 			{
-				return _testLogger ?? (_testLogger = new TestLogger());
+				return _testLogger ??= new TestLogger();
 			}
 		}
 	}

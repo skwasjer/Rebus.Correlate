@@ -1,50 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp2.1;netcoreapp1.1;net461;net46</TargetFrameworks>
+    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;net46</TargetFrameworks>
     <IsTestProject>true</IsTestProject>
-    <IsPackable>false</IsPackable>
     <RootNamespace>Rebus.Correlate</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp2.1' Or '$(TargetFramework)'=='netcoreapp1.1' Or '$(TargetFramework)'=='net46'">
-    <DefineConstants>REBUS_4</DefineConstants>
-    <RebusVersion>4</RebusVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp2.2' Or '$(TargetFramework)'=='net461'">
-    <DefineConstants>REBUS_5</DefineConstants>
-    <RebusVersion>5</RebusVersion>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Correlate.DependencyInjection" Version="3.0.0" />
-    <PackageReference Include="FluentAssertions" Version="5.7.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
-    <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="xunit" Version="2.3.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Correlate.DependencyInjection" Version="3.3.0" />
+    <PackageReference Include="Rebus" Version="6.4.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp2'))">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp5.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp1')) Or $(TargetFramework.StartsWith('net4'))">
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net46'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(RebusVersion)'=='4'">
-    <PackageReference Include="Rebus" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(RebusVersion)'=='5'">
-    <PackageReference Include="Rebus" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>

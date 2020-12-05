@@ -6,8 +6,15 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rebus.Correlate", "src\Rebus.Correlate\Rebus.Correlate.csproj", "{224F276C-09B7-45E3-A471-6E9932580411}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{507AF14C-E966-4B77-B233-DFA8E6199BEC}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+		src\Directory.Build.targets = src\Directory.Build.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{828B1069-29BF-416B-A69A-EF4B235F3F77}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.targets = test\Directory.Build.targets
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rebus.Correlate.Tests", "test\Rebus.Correlate.Tests\Rebus.Correlate.Tests.csproj", "{B1696018-1A0D-49C7-B9E5-69563110219D}"
 EndProject
@@ -16,8 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		appveyor.yml = appveyor.yml
 		Changelog.md = Changelog.md
+		Directory.Build.props = Directory.Build.props
 		README.md = README.md
-		src\package.props = src\package.props
 	EndProjectSection
 EndProject
 Global

@@ -13,7 +13,7 @@ namespace Rebus.Correlate.Steps
 		private readonly IAsyncCorrelationManager _asyncCorrelationManager;
 		private readonly ILog _logger;
 
-		public CorrelateIncomingMessageStep(IAsyncCorrelationManager asyncCorrelationManager, IRebusLoggerFactory rebusLoggerFactory)
+		public CorrelateIncomingMessageStep(IAsyncCorrelationManager asyncCorrelationManager, IRebusLoggerFactory? rebusLoggerFactory)
 		{
 			_asyncCorrelationManager = asyncCorrelationManager ?? throw new ArgumentNullException(nameof(asyncCorrelationManager));
 
@@ -22,8 +22,8 @@ namespace Rebus.Correlate.Steps
 
 		public Task Process(IncomingStepContext context, Func<Task> next)
 		{
-			var message = context.Load<Message>();
-			message.Headers.TryGetValue(Headers.CorrelationId, out string correlationId);
+			Message message = context.Load<Message>();
+			message.Headers.TryGetValue(Headers.CorrelationId, out string? correlationId);
 			if (correlationId != null)
 			{
 				_logger.Debug("Correlation ID: {CorrelationId}", correlationId);

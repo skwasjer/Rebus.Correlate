@@ -10,13 +10,13 @@ namespace Rebus.Correlate
 	/// </summary>
 	public class DependencyResolverAdapter : IResolutionContext
 	{
-		private readonly Func<Type, object> _optionalResolve;
+		private readonly Func<Type, object?> _optionalResolve;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DependencyResolverAdapter"/> class using specified <paramref name="optionalResolve"/> func.
 		/// </summary>
 		/// <param name="optionalResolve">The resolver func that resolves optional services by type.</param>
-		public DependencyResolverAdapter(Func<Type, object> optionalResolve)
+		public DependencyResolverAdapter(Func<Type, object?> optionalResolve)
 		{
 			_optionalResolve = optionalResolve ?? throw new ArgumentNullException(nameof(optionalResolve));
 		}
@@ -26,7 +26,7 @@ namespace Rebus.Correlate
 		/// </summary>
 		public TService Get<TService>()
 		{
-			var service = GetOrNull<TService>();
+			TService service = GetOrNull<TService>();
 			if (service == null)
 			{
 				throw new InvalidOperationException($"Correlate can not be enabled, the service '{typeof(TService).FullName}' can not be resolved.");
@@ -40,20 +40,16 @@ namespace Rebus.Correlate
 		/// </summary>
 		public TService GetOrNull<TService>()
 		{
-			return (TService)_optionalResolve(typeof(TService));
+			return (TService)_optionalResolve(typeof(TService))!;
 		}
 
-#if NETSTANDARD2_0 || NETFRAMEWORK
 		[ExcludeFromCodeCoverage]
-#endif
 		bool IResolutionContext.Has<TService>(bool primary)
 		{
 			throw new NotImplementedException();
 		}
 
-#if NETSTANDARD2_0 || NETFRAMEWORK
 		[ExcludeFromCodeCoverage]
-#endif
 		IEnumerable IResolutionContext.TrackedInstances => throw new NotImplementedException();
 	}
 }

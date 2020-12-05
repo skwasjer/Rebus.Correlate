@@ -100,7 +100,7 @@ namespace Rebus.Correlate
 				.ConfigurePipeline();
 		}
 
-		private static OptionsConfigurer RegisterSteps(this OptionsConfigurer configurer, IResolutionContext resolver = null)
+		private static OptionsConfigurer RegisterSteps(this OptionsConfigurer configurer, IResolutionContext? resolver = null)
 		{
 			configurer.Register(ctx =>
 				new CorrelateOutgoingMessageStep(
@@ -123,9 +123,9 @@ namespace Rebus.Correlate
 		{
 			configurer.Decorate<IPipeline>(ctx =>
 			{
-				var pipeline = ctx.Get<IPipeline>();
-				var outgoingStep = ctx.Get<CorrelateOutgoingMessageStep>();
-				var incomingStep = ctx.Get<CorrelateIncomingMessageStep>();
+				IPipeline pipeline = ctx.Get<IPipeline>();
+				CorrelateOutgoingMessageStep outgoingStep = ctx.Get<CorrelateOutgoingMessageStep>();
+				CorrelateIncomingMessageStep incomingStep = ctx.Get<CorrelateIncomingMessageStep>();
 				return new PipelineStepInjector(pipeline)
 					.OnSend(outgoingStep, PipelineRelativePosition.Before, typeof(FlowCorrelationIdStep))
 					.OnReceive(incomingStep, PipelineRelativePosition.After, typeof(DeserializeIncomingMessageStep));

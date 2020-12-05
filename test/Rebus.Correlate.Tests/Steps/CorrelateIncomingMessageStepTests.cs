@@ -32,7 +32,7 @@ namespace Rebus.Correlate.Steps
 				.Returns(txItems);
 
 			_messageHeaders = new Dictionary<string, string>();
-			var transportMessage = new TransportMessage(_messageHeaders, new byte[0]);
+			var transportMessage = new TransportMessage(_messageHeaders, Array.Empty<byte>());
 			_stepContext = new IncomingStepContext(transportMessage, transactionContextMock.Object);
 			_stepContext.Save(new Message(_messageHeaders, new { }));
 
@@ -45,7 +45,7 @@ namespace Rebus.Correlate.Steps
 		public void When_creating_instance_without_asyncCorrelationManager_it_should_throw()
 		{
 			IAsyncCorrelationManager asyncCorrelationManager = null;
-			// ReSharper disable once ExpressionIsAlwaysNull
+			// ReSharper disable once AssignNullToNotNullAttribute
 			// ReSharper disable once ObjectCreationAsStatement
 			Action act = () => new CorrelateIncomingMessageStep(asyncCorrelationManager, new NullLoggerFactory());
 
