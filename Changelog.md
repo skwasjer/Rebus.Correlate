@@ -3,6 +3,9 @@
 ## v3.0.0
 
 - Dropped .NET 4.6 target framework
+- Added .NET 6 target framework
+- Updated to Correlate v4.0.0
+- Updated to Rebus v6.6.5
 
 ## v2.0.0
 

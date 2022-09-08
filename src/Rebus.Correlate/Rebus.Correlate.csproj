@@ -13,12 +13,15 @@
     <PackageReleaseNotes>
       v3.0.0
       - Dropped .NET 4.6 target framework
+      - Added .NET 6 target framework
+      - Updated to Correlate v4.0.0
+      - Updated to Rebus v6.6.5
     </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Correlate" Version="3.3.0" />
-    <PackageReference Include="Rebus" Version="6.0.0" />
+    <PackageReference Include="Correlate" Version="4.0.0" />
+    <PackageReference Include="Rebus" Version="6.6.5" />
   </ItemGroup>
 
 </Project>
