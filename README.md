@@ -161,6 +161,8 @@ See [Correlate](https://github.com/skwasjer/Correlate) documentation for further
 ### Build requirements
 - Visual Studio 2022
 - .NET 6 SDK
+- .NET 5 SDK
+- .NET Core 3.1 SDK
 
 #### Contributions
 PR's are welcome. Please rebase before submitting, provide test coverage, and ensure the AppVeyor build passes. I will not consider PR's otherwise.
