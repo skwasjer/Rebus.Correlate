@@ -11,10 +11,8 @@
     <PackageProjectUrl>https://github.com/skwasjer/Rebus.Correlate</PackageProjectUrl>
     <PackageTags>rebus, transport, correlationid, correlation, correlate, causation</PackageTags>
     <PackageReleaseNotes>
-      v2.0.0
-      - Updated dependencies: Rebus >= v6.0, Correlate >= 3.3
-      - Added .NET 5 and .NET Standard 2.1 target framework.
-      - Dropped .NET Standard 1.3 target framework.
+      v3.0.0
+      - Dropped .NET 4.6 target framework
     </PackageReleaseNotes>
   </PropertyGroup>
 

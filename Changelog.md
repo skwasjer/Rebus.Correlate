@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.0
+
+- Dropped .NET 4.6 target framework
+
 ## v2.0.0
 
 - Updated dependencies: Rebus >= v6.0, Correlate >= 3.3
