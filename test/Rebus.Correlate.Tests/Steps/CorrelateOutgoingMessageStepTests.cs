@@ -106,7 +106,7 @@ namespace Rebus.Correlate.Steps
 			// Assert
 			_messageHeaders
 				.Should().ContainKey(Headers.CorrelationId)
-				.WhichValue
+				.WhoseValue
 				.Should().Be(expectedCorrelationId);
 			_correlationIdFactoryMock.Verify(m => m.Create(), Times.Never);
 			isNextCalled.Should().BeTrue();
@@ -137,7 +137,7 @@ namespace Rebus.Correlate.Steps
 			// Assert
 			_messageHeaders
 				.Should().ContainKey(Headers.CorrelationId)
-				.WhichValue
+				.WhoseValue
 				.Should().Be(expectedCorrelationId);
 			_correlationIdFactoryMock.Verify(m => m.Create(), Times.Never);
 			isNextCalled.Should().BeTrue();
@@ -169,7 +169,7 @@ namespace Rebus.Correlate.Steps
 			// Assert
 			_messageHeaders
 				.Should().ContainKey(Headers.CorrelationId)
-				.WhichValue
+				.WhoseValue
 				.Should().Be(expectedCorrelationId);
 			_correlationIdFactoryMock.Verify();
 			isNextCalled.Should().BeTrue();
@@ -184,7 +184,7 @@ namespace Rebus.Correlate.Steps
 			// Assert
 			_messageHeaders
 				.Should().ContainKey(Headers.CorrelationSequence)
-				.WhichValue
+				.WhoseValue
 				.Should().Be("0");
 		}
 
@@ -214,7 +214,7 @@ namespace Rebus.Correlate.Steps
 			// Assert
 			_messageHeaders
 				.Should().ContainKey(Headers.CorrelationSequence)
-				.WhichValue
+				.WhoseValue
 				.Should().Be(expectedOutgoingSequenceNr.ToString());
 		}
 	}
