@@ -9,7 +9,12 @@
     <Description>Rebus integration of Correlate to correlate message flow via any supported Rebus transport.</Description>
     <PackageProjectUrl>https://github.com/skwasjer/Rebus.Correlate</PackageProjectUrl>
     <PackageTags>rebus, transport, correlationid, correlation, correlate, causation</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Correlate" Version="4.0.0" />
