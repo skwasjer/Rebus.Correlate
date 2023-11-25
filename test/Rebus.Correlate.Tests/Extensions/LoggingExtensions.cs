@@ -5,28 +5,28 @@ namespace Rebus.Correlate.Extensions;
 
 public static class LoggingExtensions
 {
-	public static IServiceCollection ForceEnableLogging(this IServiceCollection services)
-	{
-		return services.AddLogging(logging => logging.AddProvider(new TestLoggerProvider()));
-	}
+    public static IServiceCollection ForceEnableLogging(this IServiceCollection services)
+    {
+        return services.AddLogging(logging => logging.AddProvider(new TestLoggerProvider()));
+    }
 
-	public static ILoggerFactory ForceEnableLogging(this ILoggerFactory loggerFactory)
-	{
-		loggerFactory.AddProvider(new TestLoggerProvider());
-		return loggerFactory;
-	}
+    public static ILoggerFactory ForceEnableLogging(this ILoggerFactory loggerFactory)
+    {
+        loggerFactory.AddProvider(new TestLoggerProvider());
+        return loggerFactory;
+    }
 
-	private class TestLoggerProvider : ILoggerProvider
-	{
-		private TestLogger _testLogger;
+    private class TestLoggerProvider : ILoggerProvider
+    {
+        private TestLogger _testLogger;
 
-		public void Dispose()
-		{
-		}
+        public void Dispose()
+        {
+        }
 
-		public ILogger CreateLogger(string categoryName)
-		{
-			return _testLogger ??= new TestLogger();
-		}
-	}
+        public ILogger CreateLogger(string categoryName)
+        {
+            return _testLogger ??= new TestLogger();
+        }
+    }
 }

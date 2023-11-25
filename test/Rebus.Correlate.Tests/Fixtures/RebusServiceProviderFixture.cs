@@ -6,24 +6,24 @@ namespace Rebus.Correlate.Fixtures;
 
 public sealed class RebusServiceProviderFixture : RebusFixture, IDisposable
 {
-	private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
 
-	public RebusServiceProviderFixture()
-	{
-		_serviceProvider = new ServiceCollection()
-			.ForceEnableLogging()
-			.AddCorrelate()
-			.BuildServiceProvider();
+    public RebusServiceProviderFixture()
+    {
+        _serviceProvider = new ServiceCollection()
+            .ForceEnableLogging()
+            .AddCorrelate()
+            .BuildServiceProvider();
 
-		Configure(configurer => 
-			configurer.Options(opts => 
-				opts.EnableCorrelate(_serviceProvider)
-			)
-		);
-	}
+        Configure(configurer =>
+            configurer.Options(opts =>
+                opts.EnableCorrelate(_serviceProvider)
+            )
+        );
+    }
 
-	public void Dispose()
-	{
-		(_serviceProvider as IDisposable)?.Dispose();
-	}
+    public void Dispose()
+    {
+        (_serviceProvider as IDisposable)?.Dispose();
+    }
 }
