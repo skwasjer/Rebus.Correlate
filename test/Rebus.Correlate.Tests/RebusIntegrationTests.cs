@@ -139,7 +139,7 @@ public abstract class RebusIntegrationTests : IDisposable
                 IMessageContext ctx = MessageContext.Current;
                 ctx.Headers.TryGetValue(Headers.CorrelationId, out string? cid);
                 ctx.Headers.TryGetValue(Headers.CorrelationSequence, out string? sequenceStr);
-                int.TryParse(sequenceStr, out int sequence);
+                _ = int.TryParse(sequenceStr, out int sequence);
 
                 // Assert context.
                 CorrelationContext? correlationContext = _correlationContextAccessor.CorrelationContext;
