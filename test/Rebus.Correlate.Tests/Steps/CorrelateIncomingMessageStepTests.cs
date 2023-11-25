@@ -9,30 +9,29 @@ namespace Rebus.Correlate.Steps;
 
 public class CorrelateIncomingMessageStepTests
 {
-    private readonly Mock<IAsyncCorrelationManager> _asyncCorrelationManagerMock;
-    private readonly Dictionary<string, string> _messageHeaders;
+    private readonly IAsyncCorrelationManager _asyncCorrelationManagerMock;
+    private readonly Dictionary<string, string> _messageHeaders = new();
     private readonly IncomingStepContext _stepContext;
     private readonly Func<Task> _next;
     private readonly CorrelateIncomingMessageStep _sut;
 
     public CorrelateIncomingMessageStepTests()
     {
-        _asyncCorrelationManagerMock = new Mock<IAsyncCorrelationManager>();
+        _asyncCorrelationManagerMock = Substitute.For<IAsyncCorrelationManager>();
 
         var txItems = new ConcurrentDictionary<string, object>();
-        var transactionContextMock = new Mock<ITransactionContext>();
+        ITransactionContext transactionContextMock = Substitute.For<ITransactionContext>();
         transactionContextMock
-            .Setup(m => m.Items)
+            .Items
             .Returns(txItems);
 
-        _messageHeaders = new Dictionary<string, string>();
         var transportMessage = new TransportMessage(_messageHeaders, Array.Empty<byte>());
-        _stepContext = new IncomingStepContext(transportMessage, transactionContextMock.Object);
+        _stepContext = new IncomingStepContext(transportMessage, transactionContextMock);
         _stepContext.Save(new Message(_messageHeaders, new { }));
 
         _next = () => Task.CompletedTask;
 
-        _sut = new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock.Object, new NullLoggerFactory());
+        _sut = new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock, new NullLoggerFactory());
     }
 
     [Fact]
@@ -55,7 +54,7 @@ public class CorrelateIncomingMessageStepTests
         IRebusLoggerFactory? rebusLoggerFactory = null;
 
         // Act
-        Func<CorrelateIncomingMessageStep> act = () => new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock.Object, rebusLoggerFactory);
+        Func<CorrelateIncomingMessageStep> act = () => new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock, rebusLoggerFactory);
 
         // Assert
         act.Should().NotThrow();
@@ -71,7 +70,9 @@ public class CorrelateIncomingMessageStepTests
         await _sut.Process(_stepContext, _next);
 
         // Assert
-        _asyncCorrelationManagerMock.Verify(m => m.CorrelateAsync(expectedCorrelationId, _next, It.IsAny<OnException>()), Times.Once);
+        await _asyncCorrelationManagerMock
+            .Received(1)
+            .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnException>());
     }
 
     [Fact]
@@ -85,6 +86,8 @@ public class CorrelateIncomingMessageStepTests
         await _sut.Process(_stepContext, _next);
 
         // Assert
-        _asyncCorrelationManagerMock.Verify(m => m.CorrelateAsync(expectedCorrelationId, _next, It.IsAny<OnException>()), Times.Once);
+        await _asyncCorrelationManagerMock
+            .Received(1)
+            .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnException>());
     }
 }
