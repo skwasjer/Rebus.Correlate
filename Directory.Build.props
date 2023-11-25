@@ -16,4 +16,11 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- Microsoft.Extensions.* -->
+    <PackageVersion_Microsoft_Extensions>8.0.0</PackageVersion_Microsoft_Extensions>
+    <PackageVersion_Microsoft_Extensions Condition="'$(TargetFramework)'=='net6.0'">6.0.0</PackageVersion_Microsoft_Extensions>
+    <PackageVersion_Microsoft_Extensions Condition="$(TargetFramework.StartsWith('netstandard2')) Or '$(TargetFramework)'=='net5.0'">5.0.0</PackageVersion_Microsoft_Extensions>
+  </PropertyGroup>
+
 </Project>
