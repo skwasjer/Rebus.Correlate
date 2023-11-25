@@ -19,7 +19,7 @@ public abstract class RebusIntegrationTests : IDisposable
 
     private readonly TaskCompletionSource<string> _tcs;
 
-    public RebusIntegrationTests(RebusFixture fixture)
+    protected RebusIntegrationTests(RebusFixture fixture)
     {
         _fixture = fixture;
         _activator = fixture.CreateActivator();
@@ -34,8 +34,10 @@ public abstract class RebusIntegrationTests : IDisposable
     public void Dispose()
     {
         _tcs.TrySetCanceled();
+        // ReSharper disable ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
         _bus?.Dispose();
         _activator?.Dispose();
+        // ReSharper restore ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
         GC.SuppressFinalize(this);
     }
 
@@ -135,14 +137,14 @@ public abstract class RebusIntegrationTests : IDisposable
         _activator.Handle<TestMessage>(async message =>
             {
                 IMessageContext ctx = MessageContext.Current;
-                ctx.Headers.TryGetValue(Headers.CorrelationId, out string cid);
-                ctx.Headers.TryGetValue(Headers.CorrelationSequence, out string sequenceStr);
+                ctx.Headers.TryGetValue(Headers.CorrelationId, out string? cid);
+                ctx.Headers.TryGetValue(Headers.CorrelationSequence, out string? sequenceStr);
                 int.TryParse(sequenceStr, out int sequence);
 
                 // Assert context.
-                CorrelationContext correlationContext = _correlationContextAccessor.CorrelationContext;
+                CorrelationContext? correlationContext = _correlationContextAccessor.CorrelationContext;
                 correlationContext.Should().NotBeNull();
-                correlationContext.CorrelationId.Should().Be(cid);
+                correlationContext!.CorrelationId.Should().Be(cid);
 
                 if (sequence < maxSequence)
                 {

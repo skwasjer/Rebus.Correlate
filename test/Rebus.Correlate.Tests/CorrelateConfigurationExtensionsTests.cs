@@ -12,9 +12,8 @@ public class CorrelateConfigurationExtensionsTests
         [Fact]
         public void When_configuring_instance_without_configurer_it_should_throw()
         {
-            OptionsConfigurer configurer = null;
-            // ReSharper disable once ExpressionIsAlwaysNull
-            Action act = () => configurer.EnableCorrelate(new ServiceCollection().BuildServiceProvider());
+            OptionsConfigurer? configurer = null;
+            Action act = () => configurer!.EnableCorrelate(new ServiceCollection().BuildServiceProvider());
 
             // Assert
             act.Should()
@@ -25,12 +24,11 @@ public class CorrelateConfigurationExtensionsTests
         [Fact]
         public void When_configuring_instance_without_serviceProvider_it_should_throw()
         {
-            IServiceProvider serviceProvider = null;
+            IServiceProvider? serviceProvider = null;
             Action act = () =>
                 Configure.With(new BuiltinHandlerActivator())
                     .Options(opts =>
-                        // ReSharper disable once ExpressionIsAlwaysNull
-                        opts.EnableCorrelate(serviceProvider)
+                        opts.EnableCorrelate(serviceProvider!)
                     );
 
             // Assert
@@ -45,9 +43,8 @@ public class CorrelateConfigurationExtensionsTests
         [Fact]
         public void When_configuring_instance_without_configurer_it_should_throw()
         {
-            OptionsConfigurer configurer = null;
-            // ReSharper disable once ExpressionIsAlwaysNull
-            Action act = () => configurer.EnableCorrelate(new LoggerFactory());
+            OptionsConfigurer? configurer = null;
+            Action act = () => configurer!.EnableCorrelate(new LoggerFactory());
 
             // Assert
             act.Should()
@@ -58,12 +55,11 @@ public class CorrelateConfigurationExtensionsTests
         [Fact]
         public void When_configuring_instance_without_serviceProvider_it_should_throw()
         {
-            ILoggerFactory loggerFactory = null;
+            ILoggerFactory? loggerFactory = null;
             Action act = () =>
                 Configure.With(new BuiltinHandlerActivator())
                     .Options(opts =>
-                        // ReSharper disable once ExpressionIsAlwaysNull
-                        opts.EnableCorrelate(loggerFactory)
+                        opts.EnableCorrelate(loggerFactory!)
                     );
 
             // Assert
@@ -78,9 +74,8 @@ public class CorrelateConfigurationExtensionsTests
         [Fact]
         public void When_configuring_instance_without_configurer_it_should_throw()
         {
-            OptionsConfigurer configurer = null;
-            // ReSharper disable once ExpressionIsAlwaysNull
-            Action act = () => configurer.EnableCorrelate(new DependencyResolverAdapter(_ => null));
+            OptionsConfigurer? configurer = null;
+            Action act = () => configurer!.EnableCorrelate(new DependencyResolverAdapter(_ => null));
 
             // Assert
             act.Should()
@@ -91,12 +86,11 @@ public class CorrelateConfigurationExtensionsTests
         [Fact]
         public void When_configuring_instance_without_dependencyResolverAdapter_it_should_throw()
         {
-            DependencyResolverAdapter dependencyResolverAdapter = null;
+            DependencyResolverAdapter? dependencyResolverAdapter = null;
             Action act = () =>
                 Configure.With(new BuiltinHandlerActivator())
                     .Options(opts =>
-                        // ReSharper disable once ExpressionIsAlwaysNull
-                        opts.EnableCorrelate(dependencyResolverAdapter)
+                        opts.EnableCorrelate(dependencyResolverAdapter!)
                     );
 
             // Assert

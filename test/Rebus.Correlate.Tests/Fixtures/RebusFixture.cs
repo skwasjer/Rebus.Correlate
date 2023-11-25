@@ -10,9 +10,9 @@ namespace Rebus.Correlate.Fixtures;
 public abstract class RebusFixture
 {
     private readonly List<Action<RebusConfigurer>> _configureActions = new();
-    private IBusStarter _busStarter;
+    private IBusStarter? _busStarter;
 
-    public RebusFixture()
+    protected RebusFixture()
     {
         _configureActions.Add(configurer => configurer
             .Transport(t => t.UseInMemoryTransport(new InMemNetwork(), "input"))
@@ -31,7 +31,7 @@ public abstract class RebusFixture
 
     public IBus Start()
     {
-        return _busStarter.Start();
+        return _busStarter?.Start() ?? throw new InvalidOperationException("Bus starter was not created.");
     }
 
     protected void Configure(Action<RebusConfigurer> configureRebus)

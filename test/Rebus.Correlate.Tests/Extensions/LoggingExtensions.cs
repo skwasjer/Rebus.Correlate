@@ -18,7 +18,7 @@ public static class LoggingExtensions
 
     private class TestLoggerProvider : ILoggerProvider
     {
-        private TestLogger _testLogger;
+        private TestLogger? _testLogger;
 
         public void Dispose()
         {

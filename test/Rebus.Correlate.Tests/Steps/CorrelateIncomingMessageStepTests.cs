@@ -38,10 +38,10 @@ public class CorrelateIncomingMessageStepTests
     [Fact]
     public void When_creating_instance_without_asyncCorrelationManager_it_should_throw()
     {
-        IAsyncCorrelationManager asyncCorrelationManager = null;
-        // ReSharper disable once AssignNullToNotNullAttribute
-        // ReSharper disable once ObjectCreationAsStatement
-        Action act = () => new CorrelateIncomingMessageStep(asyncCorrelationManager, new NullLoggerFactory());
+        IAsyncCorrelationManager? asyncCorrelationManager = null;
+
+        // Act
+        Func<CorrelateIncomingMessageStep> act = () => new CorrelateIncomingMessageStep(asyncCorrelationManager!, new NullLoggerFactory());
 
         // Assert
         act.Should()
@@ -52,10 +52,10 @@ public class CorrelateIncomingMessageStepTests
     [Fact]
     public void When_creating_instance_without_loggerFactory_it_should_not_throw()
     {
-        IRebusLoggerFactory rebusLoggerFactory = null;
-        // ReSharper disable once ExpressionIsAlwaysNull
-        // ReSharper disable once ObjectCreationAsStatement
-        Action act = () => new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock.Object, rebusLoggerFactory);
+        IRebusLoggerFactory? rebusLoggerFactory = null;
+
+        // Act
+        Func<CorrelateIncomingMessageStep> act = () => new CorrelateIncomingMessageStep(_asyncCorrelationManagerMock.Object, rebusLoggerFactory);
 
         // Assert
         act.Should().NotThrow();
@@ -64,7 +64,7 @@ public class CorrelateIncomingMessageStepTests
     [Fact]
     public async Task Given_no_correlation_id_is_stored_with_message_it_should_use_message_id()
     {
-        const string expectedCorrelationId = null;
+        const string? expectedCorrelationId = null;
         _messageHeaders.Clear();
 
         // Act

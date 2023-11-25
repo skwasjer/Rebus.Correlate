@@ -3,7 +3,7 @@
 public class DependencyResolverAdapterTests
 {
     private readonly DependencyResolverAdapter _sut;
-    private Func<Type, object> _optionalResolve;
+    private Func<Type, object?> _optionalResolve = _ => null;
 
     public DependencyResolverAdapterTests()
     {
@@ -13,10 +13,10 @@ public class DependencyResolverAdapterTests
     [Fact]
     public void When_creating_instance_without_func_it_should_throw()
     {
-        Func<Type, object> optionalResolve = null;
-        // ReSharper disable once ExpressionIsAlwaysNull
-        // ReSharper disable once ObjectCreationAsStatement
-        Action act = () => new DependencyResolverAdapter(optionalResolve);
+        Func<Type, object>? optionalResolve = null;
+
+        // Act
+        Func<DependencyResolverAdapter> act = () => new DependencyResolverAdapter(optionalResolve!);
 
         // Assert
         act.Should()
@@ -27,7 +27,7 @@ public class DependencyResolverAdapterTests
     [Fact]
     public void Given_dependency_is_not_registered_when_resolving_optional_should_return_null()
     {
-        _optionalResolve = type => null;
+        _optionalResolve = _ => null;
 
         _sut.GetOrNull<object>().Should().BeNull();
     }
@@ -35,8 +35,8 @@ public class DependencyResolverAdapterTests
     [Fact]
     public void Given_dependency_is_registered_when_resolving_optional_should_return_null()
     {
-        object instance = new object();
-        _optionalResolve = type => instance;
+        object instance = new();
+        _optionalResolve = _ => instance;
 
         Func<object> act = () => _sut.GetOrNull<object>();
 
@@ -46,7 +46,7 @@ public class DependencyResolverAdapterTests
     [Fact]
     public void Given_dependency_is_not_registered_when_resolving_should_return_throw()
     {
-        _optionalResolve = type => null;
+        _optionalResolve = _ => null;
 
         Func<object> act = () => _sut.Get<object>();
 
@@ -56,8 +56,8 @@ public class DependencyResolverAdapterTests
     [Fact]
     public void Given_dependency_is_registered_when_resolving_should_return_instance()
     {
-        object instance = new object();
-        _optionalResolve = type => instance;
+        object instance = new();
+        _optionalResolve = _ => instance;
 
         _sut.Get<object>().Should().Be(instance);
     }

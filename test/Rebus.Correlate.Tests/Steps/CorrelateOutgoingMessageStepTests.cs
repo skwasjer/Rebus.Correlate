@@ -40,10 +40,10 @@ public class CorrelateOutgoingMessageStepTests
     [Fact]
     public void When_creating_instance_without_correlationContextAccessor_it_should_throw()
     {
-        ICorrelationContextAccessor correlationContextAccessor = null;
-        // ReSharper disable once ExpressionIsAlwaysNull
-        // ReSharper disable once ObjectCreationAsStatement
-        Action act = () => new CorrelateOutgoingMessageStep(correlationContextAccessor, _correlationIdFactoryMock.Object, new NullLoggerFactory());
+        ICorrelationContextAccessor? correlationContextAccessor = null;
+
+        // Act
+        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(correlationContextAccessor!, _correlationIdFactoryMock.Object, new NullLoggerFactory());
 
         // Assert
         act.Should()
@@ -54,10 +54,10 @@ public class CorrelateOutgoingMessageStepTests
     [Fact]
     public void When_creating_instance_without_loggerFactory_it_should_not_throw()
     {
-        IRebusLoggerFactory rebusLoggerFactory = null;
-        // ReSharper disable once ExpressionIsAlwaysNull
-        // ReSharper disable once ObjectCreationAsStatement
-        Action act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock.Object, rebusLoggerFactory);
+        IRebusLoggerFactory? rebusLoggerFactory = null;
+
+        // Act
+        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock.Object, rebusLoggerFactory!);
 
         // Assert
         act.Should().NotThrow();
@@ -66,10 +66,10 @@ public class CorrelateOutgoingMessageStepTests
     [Fact]
     public void When_creating_instance_without_correlationIdFactory_it_should_throw()
     {
-        ICorrelationIdFactory correlationIdFactory = null;
-        // ReSharper disable once ExpressionIsAlwaysNull
-        // ReSharper disable once ObjectCreationAsStatement
-        Action act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, correlationIdFactory, new NullLoggerFactory());
+        ICorrelationIdFactory? correlationIdFactory = null;
+
+        // Act
+        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, correlationIdFactory!, new NullLoggerFactory());
 
         // Assert
         act.Should()
@@ -196,13 +196,13 @@ public class CorrelateOutgoingMessageStepTests
         var incomingHeaders = new Dictionary<string, string>();
         if (incomingSequenceNr.HasValue)
         {
-            incomingHeaders.Add(Headers.CorrelationSequence, incomingSequenceNr.ToString());
+            incomingHeaders.Add(Headers.CorrelationSequence, incomingSequenceNr.Value.ToString());
         }
 
         var incomingStepContext = new IncomingStepContext(
             new TransportMessage(
                 incomingHeaders,
-                new byte[0]),
+                Array.Empty<byte>()),
             _transactionContextMock.Object
         );
         incomingStepContext.Save(new Message(incomingHeaders, new { }));
