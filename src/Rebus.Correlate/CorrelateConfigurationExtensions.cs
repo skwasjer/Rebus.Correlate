@@ -36,8 +36,8 @@ public static class CorrelateConfigurationExtensions
         // Singletons
         var correlationIdFactory = new GuidCorrelationIdFactory();
         var correlationContextAccessor = new CorrelationContextAccessor();
-        configurer.Register<ICorrelationIdFactory>(ctx => correlationIdFactory);
-        configurer.Register<ICorrelationContextAccessor>(ctx => correlationContextAccessor);
+        configurer.Register<ICorrelationIdFactory>(_=> correlationIdFactory);
+        configurer.Register<ICorrelationContextAccessor>(_ => correlationContextAccessor);
 
         // Transient
         configurer.Register<ICorrelationContextFactory>(ctx =>
