@@ -74,7 +74,7 @@ public abstract class RebusIntegrationTests : IDisposable
         // Assert
         string handlerResult = await _tcs.Task.WithTimeout();
         handlerResult.Should().StartWith(expectedResultBegin, "each handler iteration adds the sequence number and ends with the correlation id");
-        Guid.TryParse(handlerResult.Substring(expectedResultBegin.Length), out _).Should().BeTrue();
+        Guid.TryParse(handlerResult.AsSpan(expectedResultBegin.Length), out _).Should().BeTrue();
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public abstract class RebusIntegrationTests : IDisposable
             // Assert
             string handlerResult = await _tcs.Task.WithTimeout();
             handlerResult.Should().StartWith(expectedResultBegin, "each handler iteration adds the sequence number and ends with the correlation id");
-            Guid.TryParse(handlerResult.Substring(expectedResultBegin.Length), out _).Should().BeTrue();
+            Guid.TryParse(handlerResult.AsSpan(expectedResultBegin.Length), out _).Should().BeTrue();
         }
         finally
         {
