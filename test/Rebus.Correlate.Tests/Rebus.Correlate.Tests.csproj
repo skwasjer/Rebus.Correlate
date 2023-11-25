@@ -12,7 +12,7 @@
 
   <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
     <!-- Testing older dependencies with older SDK. -->
-    <PackageRebusVersion>7.0.0</PackageRebusVersion>
+    <PackageRebusVersion>7.2.1</PackageRebusVersion>
   </PropertyGroup>
 
   <ItemGroup>
