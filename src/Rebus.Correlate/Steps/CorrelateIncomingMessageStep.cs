@@ -22,7 +22,7 @@ internal class CorrelateIncomingMessageStep : IIncomingStep
     {
         Message message = context.Load<Message>();
         message.Headers.TryGetValue(Headers.CorrelationId, out string? correlationId);
-        if (correlationId != null)
+        if (correlationId is not null)
         {
             _logger.Debug("Correlation ID: {CorrelationId}", correlationId);
         }

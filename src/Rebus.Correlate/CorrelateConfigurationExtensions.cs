@@ -23,12 +23,12 @@ public static class CorrelateConfigurationExtensions
     /// <returns>The <see cref="OptionsConfigurer" /> instance.</returns>
     public static OptionsConfigurer EnableCorrelate(this OptionsConfigurer configurer, ILoggerFactory loggerFactory)
     {
-        if (configurer == null)
+        if (configurer is null)
         {
             throw new ArgumentNullException(nameof(configurer));
         }
 
-        if (loggerFactory == null)
+        if (loggerFactory is null)
         {
             throw new ArgumentNullException(nameof(loggerFactory));
         }
@@ -67,7 +67,7 @@ public static class CorrelateConfigurationExtensions
     /// <returns>The <see cref="OptionsConfigurer" /> instance.</returns>
     public static OptionsConfigurer EnableCorrelate(this OptionsConfigurer configurer, IServiceProvider serviceProvider)
     {
-        if (serviceProvider == null)
+        if (serviceProvider is null)
         {
             throw new ArgumentNullException(nameof(serviceProvider));
         }
@@ -83,12 +83,12 @@ public static class CorrelateConfigurationExtensions
     /// <returns>The <see cref="OptionsConfigurer" /> instance.</returns>
     public static OptionsConfigurer EnableCorrelate(this OptionsConfigurer configurer, DependencyResolverAdapter dependencyResolverAdapter)
     {
-        if (configurer == null)
+        if (configurer is null)
         {
             throw new ArgumentNullException(nameof(configurer));
         }
 
-        if (dependencyResolverAdapter == null)
+        if (dependencyResolverAdapter is null)
         {
             throw new ArgumentNullException(nameof(dependencyResolverAdapter));
         }

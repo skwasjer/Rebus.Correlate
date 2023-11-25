@@ -15,7 +15,7 @@ internal static class BuiltinHandlerActivatorExtensions
             {
                 await handlerFunction(message);
             }
-            catch (Exception ex) when (onError != null)
+            catch (Exception ex) when (onError is not null)
             {
                 onError(ex);
             }

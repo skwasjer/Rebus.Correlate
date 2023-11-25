@@ -26,7 +26,7 @@ public class DependencyResolverAdapter : IResolutionContext
     public TService Get<TService>()
     {
         TService service = GetOrNull<TService>();
-        if (service == null)
+        if (service is null)
         {
             throw new InvalidOperationException($"Correlate can not be enabled, the service '{typeof(TService).FullName}' can not be resolved.");
         }

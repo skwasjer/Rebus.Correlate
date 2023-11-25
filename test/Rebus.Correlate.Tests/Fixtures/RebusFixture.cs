@@ -36,7 +36,7 @@ public abstract class RebusFixture
 
     protected void Configure(Action<RebusConfigurer> configureRebus)
     {
-        if (configureRebus == null)
+        if (configureRebus is null)
         {
             throw new ArgumentNullException(nameof(configureRebus));
         }

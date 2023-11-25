@@ -36,7 +36,7 @@ internal class CorrelateOutgoingMessageStep : IOutgoingStep
         int correlationSequence = 0;
         ITransactionContext transactionContext = context.Load<ITransactionContext>();
         IncomingStepContext incomingStepContext = transactionContext.GetOrNull<IncomingStepContext>(StepContext.StepContextKey);
-        if (incomingStepContext != null)
+        if (incomingStepContext is not null)
         {
             correlationSequence = GetCorrelationSequence(incomingStepContext) + 1;
         }
