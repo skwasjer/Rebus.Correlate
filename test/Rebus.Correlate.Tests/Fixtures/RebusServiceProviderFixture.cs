@@ -2,29 +2,28 @@
 using Microsoft.Extensions.DependencyInjection;
 using Rebus.Correlate.Extensions;
 
-namespace Rebus.Correlate.Fixtures
+namespace Rebus.Correlate.Fixtures;
+
+public sealed class RebusServiceProviderFixture : RebusFixture, IDisposable
 {
-	public sealed class RebusServiceProviderFixture : RebusFixture, IDisposable
+	private readonly IServiceProvider _serviceProvider;
+
+	public RebusServiceProviderFixture()
 	{
-		private readonly IServiceProvider _serviceProvider;
+		_serviceProvider = new ServiceCollection()
+			.ForceEnableLogging()
+			.AddCorrelate()
+			.BuildServiceProvider();
 
-		public RebusServiceProviderFixture()
-		{
-			_serviceProvider = new ServiceCollection()
-				.ForceEnableLogging()
-				.AddCorrelate()
-				.BuildServiceProvider();
+		Configure(configurer => 
+			configurer.Options(opts => 
+				opts.EnableCorrelate(_serviceProvider)
+			)
+		);
+	}
 
-			Configure(configurer => 
-				configurer.Options(opts => 
-					opts.EnableCorrelate(_serviceProvider)
-				)
-			);
-		}
-
-		public void Dispose()
-		{
-			(_serviceProvider as IDisposable)?.Dispose();
-		}
+	public void Dispose()
+	{
+		(_serviceProvider as IDisposable)?.Dispose();
 	}
 }

@@ -1,16 +1,15 @@
-﻿namespace Rebus.Correlate.Extensions
-{
-	public static class TaskExtensions
-	{
-		public static async Task<T> WithTimeout<T>(this Task<T> task, int millisecondsTimeout = 5000)
-		{
-			await Task.WhenAny(task, Task.Delay(millisecondsTimeout));
-			if (task.IsCompleted)
-			{
-				return await task;
-			}
+﻿namespace Rebus.Correlate.Extensions;
 
-			throw new TimeoutException();
+public static class TaskExtensions
+{
+	public static async Task<T> WithTimeout<T>(this Task<T> task, int millisecondsTimeout = 5000)
+	{
+		await Task.WhenAny(task, Task.Delay(millisecondsTimeout));
+		if (task.IsCompleted)
+		{
+			return await task;
 		}
+
+		throw new TimeoutException();
 	}
 }

@@ -3,105 +3,104 @@ using Microsoft.Extensions.Logging;
 using Rebus.Activation;
 using Rebus.Config;
 
-namespace Rebus.Correlate
+namespace Rebus.Correlate;
+
+public class CorrelateConfigurationExtensionsTests
 {
-	public class CorrelateConfigurationExtensionsTests
+	public class WithServiceProvider : CorrelateConfigurationExtensionsTests
 	{
-		public class WithServiceProvider : CorrelateConfigurationExtensionsTests
+		[Fact]
+		public void When_configuring_instance_without_configurer_it_should_throw()
 		{
-			[Fact]
-			public void When_configuring_instance_without_configurer_it_should_throw()
-			{
-				OptionsConfigurer configurer = null;
-				// ReSharper disable once ExpressionIsAlwaysNull
-				Action act = () => configurer.EnableCorrelate(new ServiceCollection().BuildServiceProvider());
+			OptionsConfigurer configurer = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			Action act = () => configurer.EnableCorrelate(new ServiceCollection().BuildServiceProvider());
 
-				// Assert
-				act.Should()
-					.Throw<ArgumentNullException>()
-					.Where(exception => exception.ParamName == nameof(configurer));
-			}
-
-			[Fact]
-			public void When_configuring_instance_without_serviceProvider_it_should_throw()
-			{
-				IServiceProvider serviceProvider = null;
-				Action act = () =>
-					Configure.With(new BuiltinHandlerActivator())
-						.Options(opts =>
-							// ReSharper disable once ExpressionIsAlwaysNull
-							opts.EnableCorrelate(serviceProvider)
-						);
-
-				// Assert
-				act.Should()
-					.Throw<ArgumentNullException>()
-					.Where(exception => exception.ParamName == nameof(serviceProvider));
-			}
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(configurer));
 		}
 
-		public class WithBuiltIn : CorrelateConfigurationExtensionsTests
+		[Fact]
+		public void When_configuring_instance_without_serviceProvider_it_should_throw()
 		{
-			[Fact]
-			public void When_configuring_instance_without_configurer_it_should_throw()
-			{
-				OptionsConfigurer configurer = null;
-				// ReSharper disable once ExpressionIsAlwaysNull
-				Action act = () => configurer.EnableCorrelate(new LoggerFactory());
-
-				// Assert
-				act.Should()
-					.Throw<ArgumentNullException>()
-					.Where(exception => exception.ParamName == nameof(configurer));
-			}
-
-			[Fact]
-			public void When_configuring_instance_without_serviceProvider_it_should_throw()
-			{
-				ILoggerFactory loggerFactory = null;
-				Action act = () =>
-					Configure.With(new BuiltinHandlerActivator()).Options(opts =>
+			IServiceProvider serviceProvider = null;
+			Action act = () =>
+				Configure.With(new BuiltinHandlerActivator())
+					.Options(opts =>
 						// ReSharper disable once ExpressionIsAlwaysNull
-						opts.EnableCorrelate(loggerFactory)
+						opts.EnableCorrelate(serviceProvider)
 					);
 
-				// Assert
-				act.Should()
-					.Throw<ArgumentNullException>()
-					.Where(exception => exception.ParamName == nameof(loggerFactory));
-			}
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(serviceProvider));
+		}
+	}
+
+	public class WithBuiltIn : CorrelateConfigurationExtensionsTests
+	{
+		[Fact]
+		public void When_configuring_instance_without_configurer_it_should_throw()
+		{
+			OptionsConfigurer configurer = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			Action act = () => configurer.EnableCorrelate(new LoggerFactory());
+
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(configurer));
 		}
 
-		public class WithDependencyResolverAdapter : CorrelateConfigurationExtensionsTests
+		[Fact]
+		public void When_configuring_instance_without_serviceProvider_it_should_throw()
 		{
-			[Fact]
-			public void When_configuring_instance_without_configurer_it_should_throw()
-			{
-				OptionsConfigurer configurer = null;
-				// ReSharper disable once ExpressionIsAlwaysNull
-				Action act = () => configurer.EnableCorrelate(new DependencyResolverAdapter(_ => null));
+			ILoggerFactory loggerFactory = null;
+			Action act = () =>
+				Configure.With(new BuiltinHandlerActivator()).Options(opts =>
+					// ReSharper disable once ExpressionIsAlwaysNull
+					opts.EnableCorrelate(loggerFactory)
+				);
 
-				// Assert
-				act.Should()
-					.Throw<ArgumentNullException>()
-					.Where(exception => exception.ParamName == nameof(configurer));
-			}
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(loggerFactory));
+		}
+	}
 
-			[Fact]
-			public void When_configuring_instance_without_dependencyResolverAdapter_it_should_throw()
-			{
-				DependencyResolverAdapter dependencyResolverAdapter = null;
-				Action act = () =>
-					Configure.With(new BuiltinHandlerActivator()).Options(opts =>
-						// ReSharper disable once ExpressionIsAlwaysNull
-						opts.EnableCorrelate(dependencyResolverAdapter)
-					);
+	public class WithDependencyResolverAdapter : CorrelateConfigurationExtensionsTests
+	{
+		[Fact]
+		public void When_configuring_instance_without_configurer_it_should_throw()
+		{
+			OptionsConfigurer configurer = null;
+			// ReSharper disable once ExpressionIsAlwaysNull
+			Action act = () => configurer.EnableCorrelate(new DependencyResolverAdapter(_ => null));
 
-				// Assert
-				act.Should()
-					.Throw<ArgumentNullException>()
-					.Where(exception => exception.ParamName == nameof(dependencyResolverAdapter));
-			}
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(configurer));
+		}
+
+		[Fact]
+		public void When_configuring_instance_without_dependencyResolverAdapter_it_should_throw()
+		{
+			DependencyResolverAdapter dependencyResolverAdapter = null;
+			Action act = () =>
+				Configure.With(new BuiltinHandlerActivator()).Options(opts =>
+					// ReSharper disable once ExpressionIsAlwaysNull
+					opts.EnableCorrelate(dependencyResolverAdapter)
+				);
+
+			// Assert
+			act.Should()
+				.Throw<ArgumentNullException>()
+				.Where(exception => exception.ParamName == nameof(dependencyResolverAdapter));
 		}
 	}
 }
