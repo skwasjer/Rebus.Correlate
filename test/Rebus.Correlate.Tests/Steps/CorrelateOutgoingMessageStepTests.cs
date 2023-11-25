@@ -57,7 +57,7 @@ public class CorrelateOutgoingMessageStepTests
         IRebusLoggerFactory? rebusLoggerFactory = null;
 
         // Act
-        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock.Object, rebusLoggerFactory!);
+        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock.Object, rebusLoggerFactory);
 
         // Assert
         act.Should().NotThrow();

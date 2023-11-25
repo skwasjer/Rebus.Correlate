@@ -14,7 +14,7 @@ internal class CorrelateOutgoingMessageStep : IOutgoingStep
     private readonly ICorrelationIdFactory _correlationIdFactory;
     private readonly ILog _logger;
 
-    public CorrelateOutgoingMessageStep(ICorrelationContextAccessor correlationContextAccessor, ICorrelationIdFactory correlationIdFactory, IRebusLoggerFactory rebusLoggerFactory)
+    public CorrelateOutgoingMessageStep(ICorrelationContextAccessor correlationContextAccessor, ICorrelationIdFactory correlationIdFactory, IRebusLoggerFactory? rebusLoggerFactory)
     {
         _correlationContextAccessor = correlationContextAccessor ?? throw new ArgumentNullException(nameof(correlationContextAccessor));
         _correlationIdFactory = correlationIdFactory ?? throw new ArgumentNullException(nameof(correlationIdFactory));
