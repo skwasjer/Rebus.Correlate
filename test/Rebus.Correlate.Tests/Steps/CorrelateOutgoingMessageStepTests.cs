@@ -11,9 +11,9 @@ namespace Rebus.Correlate.Steps;
 public class CorrelateOutgoingMessageStepTests
 {
     private readonly CorrelationContextAccessor _correlationContextAccessor;
-    private readonly Mock<ICorrelationIdFactory> _correlationIdFactoryMock;
-    private readonly Mock<ITransactionContext> _transactionContextMock;
-    private readonly Dictionary<string, string> _messageHeaders;
+    private readonly ICorrelationIdFactory _correlationIdFactoryMock;
+    private readonly ITransactionContext _transactionContextMock;
+    private readonly Dictionary<string, string> _messageHeaders = new();
     private readonly OutgoingStepContext _stepContext;
     private readonly Func<Task> _next;
     private readonly CorrelateOutgoingMessageStep _sut;
@@ -21,20 +21,19 @@ public class CorrelateOutgoingMessageStepTests
     public CorrelateOutgoingMessageStepTests()
     {
         _correlationContextAccessor = new CorrelationContextAccessor();
-        _correlationIdFactoryMock = new Mock<ICorrelationIdFactory>();
+        _correlationIdFactoryMock = Substitute.For<ICorrelationIdFactory>();
 
         var txItems = new ConcurrentDictionary<string, object>();
-        _transactionContextMock = new Mock<ITransactionContext>();
+        _transactionContextMock = Substitute.For<ITransactionContext>();
         _transactionContextMock
-            .Setup(m => m.Items)
+            .Items
             .Returns(txItems);
 
-        _messageHeaders = new Dictionary<string, string>();
-        _stepContext = new OutgoingStepContext(new Message(_messageHeaders, new { }), _transactionContextMock.Object, new DestinationAddresses(Enumerable.Empty<string>()));
+        _stepContext = new OutgoingStepContext(new Message(_messageHeaders, new { }), _transactionContextMock, new DestinationAddresses(Enumerable.Empty<string>()));
 
         _next = () => Task.CompletedTask;
 
-        _sut = new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock.Object, new NullLoggerFactory());
+        _sut = new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock, new NullLoggerFactory());
     }
 
     [Fact]
@@ -43,7 +42,7 @@ public class CorrelateOutgoingMessageStepTests
         ICorrelationContextAccessor? correlationContextAccessor = null;
 
         // Act
-        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(correlationContextAccessor!, _correlationIdFactoryMock.Object, new NullLoggerFactory());
+        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(correlationContextAccessor!, _correlationIdFactoryMock, new NullLoggerFactory());
 
         // Assert
         act.Should()
@@ -57,7 +56,7 @@ public class CorrelateOutgoingMessageStepTests
         IRebusLoggerFactory? rebusLoggerFactory = null;
 
         // Act
-        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock.Object, rebusLoggerFactory);
+        Func<CorrelateOutgoingMessageStep> act = () => new CorrelateOutgoingMessageStep(_correlationContextAccessor, _correlationIdFactoryMock, rebusLoggerFactory);
 
         // Assert
         act.Should().NotThrow();
@@ -87,12 +86,6 @@ public class CorrelateOutgoingMessageStepTests
 
         bool isNextCalled = false;
 
-        Task Next()
-        {
-            isNextCalled = true;
-            return Task.CompletedTask;
-        }
-
         // Act
         await _sut.Process(_stepContext, Next);
 
@@ -103,8 +96,15 @@ public class CorrelateOutgoingMessageStepTests
             .WhoseValue
             .Should()
             .Be(expectedCorrelationId);
-        _correlationIdFactoryMock.Verify(m => m.Create(), Times.Never);
+        _correlationIdFactoryMock.DidNotReceive().Create();
         isNextCalled.Should().BeTrue();
+        return;
+
+        Task Next()
+        {
+            isNextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 
     [Fact]
@@ -117,12 +117,6 @@ public class CorrelateOutgoingMessageStepTests
 
         bool isNextCalled = false;
 
-        Task Next()
-        {
-            isNextCalled = true;
-            return Task.CompletedTask;
-        }
-
         // Act
         await _sut.Process(_stepContext, Next);
 
@@ -133,8 +127,15 @@ public class CorrelateOutgoingMessageStepTests
             .WhoseValue
             .Should()
             .Be(expectedCorrelationId);
-        _correlationIdFactoryMock.Verify(m => m.Create(), Times.Never);
+        _correlationIdFactoryMock.DidNotReceive().Create();
         isNextCalled.Should().BeTrue();
+        return;
+
+        Task Next()
+        {
+            isNextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 
     [Fact]
@@ -145,17 +146,10 @@ public class CorrelateOutgoingMessageStepTests
         _messageHeaders.Clear();
         _correlationContextAccessor.CorrelationContext = null;
         _correlationIdFactoryMock
-            .Setup(m => m.Create())
-            .Returns(correlationId)
-            .Verifiable();
+            .Create()
+            .Returns(correlationId);
 
         bool isNextCalled = false;
-
-        Task Next()
-        {
-            isNextCalled = true;
-            return Task.CompletedTask;
-        }
 
         // Act
         await _sut.Process(_stepContext, Next);
@@ -167,8 +161,15 @@ public class CorrelateOutgoingMessageStepTests
             .WhoseValue
             .Should()
             .Be(expectedCorrelationId);
-        _correlationIdFactoryMock.Verify();
+        _correlationIdFactoryMock.Received(1).Create();
         isNextCalled.Should().BeTrue();
+        return;
+
+        Task Next()
+        {
+            isNextCalled = true;
+            return Task.CompletedTask;
+        }
     }
 
     [Fact]
@@ -203,7 +204,7 @@ public class CorrelateOutgoingMessageStepTests
             new TransportMessage(
                 incomingHeaders,
                 Array.Empty<byte>()),
-            _transactionContextMock.Object
+            _transactionContextMock
         );
         incomingStepContext.Save(new Message(incomingHeaders, new { }));
         _stepContext.Save(incomingStepContext);
