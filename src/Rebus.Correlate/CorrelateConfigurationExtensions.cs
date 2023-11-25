@@ -1,5 +1,4 @@
-﻿using System;
-using Correlate;
+﻿using Correlate;
 using Microsoft.Extensions.Logging;
 using Rebus.Config;
 using Rebus.Correlate.Steps;

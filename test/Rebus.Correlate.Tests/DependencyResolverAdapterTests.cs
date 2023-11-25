@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentAssertions;
-using Xunit;
-
-namespace Rebus.Correlate
+﻿namespace Rebus.Correlate
 {
 	public class DependencyResolverAdapterTests
 	{

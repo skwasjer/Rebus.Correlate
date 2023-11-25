@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Correlate;
+﻿using Correlate;
 using Rebus.Logging;
 using Rebus.Messages;
 using Rebus.Pipeline;

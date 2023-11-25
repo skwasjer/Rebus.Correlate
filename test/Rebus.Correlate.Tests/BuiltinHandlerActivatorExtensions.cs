@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Rebus.Activation;
+﻿using Rebus.Activation;
 
 namespace Rebus.Correlate
 {

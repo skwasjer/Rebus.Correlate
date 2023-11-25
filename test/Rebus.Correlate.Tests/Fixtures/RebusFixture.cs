@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Rebus.Activation;
+﻿using Rebus.Activation;
 using Rebus.Bus;
 using Rebus.Config;
 using Rebus.Persistence.InMem;

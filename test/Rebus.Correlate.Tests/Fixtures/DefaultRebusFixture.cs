@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Rebus.Correlate.Extensions;
 
 namespace Rebus.Correlate.Fixtures

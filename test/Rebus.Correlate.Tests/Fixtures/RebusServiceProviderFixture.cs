@@ -1,5 +1,4 @@
-﻿using System;
-using Correlate.DependencyInjection;
+﻿using Correlate.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Rebus.Correlate.Extensions;
 

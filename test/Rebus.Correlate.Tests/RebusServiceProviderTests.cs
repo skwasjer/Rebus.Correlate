@@ -1,5 +1,4 @@
 ﻿using Rebus.Correlate.Fixtures;
-using Xunit;
 
 namespace Rebus.Correlate
 {

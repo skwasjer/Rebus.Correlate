@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Rebus.Correlate.Extensions
+﻿namespace Rebus.Correlate.Extensions
 {
 	public static class TaskExtensions
 	{

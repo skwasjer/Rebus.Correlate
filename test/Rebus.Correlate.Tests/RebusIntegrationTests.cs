@@ -1,14 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Correlate;
-using FluentAssertions;
+﻿using Correlate;
 using Rebus.Activation;
 using Rebus.Bus;
 using Rebus.Correlate.Extensions;
 using Rebus.Correlate.Fixtures;
 using Rebus.Messages;
 using Rebus.Pipeline;
-using Xunit;
 
 namespace Rebus.Correlate
 {
