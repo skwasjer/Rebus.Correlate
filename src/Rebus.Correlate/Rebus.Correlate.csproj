@@ -3,21 +3,18 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
     <IsTestProject>false</IsTestProject>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>Rebus integration of Correlate to correlate message flow via any supported Rebus transport.</Description>
     <PackageProjectUrl>https://github.com/skwasjer/Rebus.Correlate</PackageProjectUrl>
     <PackageTags>rebus, transport, correlationid, correlation, correlate, causation</PackageTags>
-    <PackageReleaseNotes>
-      v3.0.0
-      - Dropped .NET 4.6 target framework
-      - Added .NET 6 target framework
-      - Updated to Correlate v4.0.0
-      - Updated to Rebus v6.6.5
-    </PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Correlate" Version="4.0.0" />

@@ -1,24 +1,4 @@
-# Rebus.Correlate
-
 [Rebus](https://github.com/rebus-org/Rebus) integration of [Correlate](https://github.com/skwasjer/Correlate) to correlate message flow via any supported Rebus transport.
-
-## Installation
-
-Install Rebus.Correlate via the Nuget package manager or `dotnet` cli.
-
-```powershell
-dotnet add package Rebus.Correlate
-```
-
----
-
-[![Main workflow](https://github.com/skwasjer/Rebus.Correlate/actions/workflows/main.yml/badge.svg)](https://github.com/skwasjer/Rebus.Correlate/actions/workflows/main.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=skwasjer_Rebus.Correlate&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=skwasjer_Rebus.Correlate)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=skwasjer_Rebus.Correlate&metric=coverage)](https://sonarcloud.io/component_measures?id=skwasjer_Rebus.Correlate&metric=coverage)
-
-| | | |
-|---|---|---|
-| `Rebus.Correlate` | [![NuGet](https://img.shields.io/nuget/v/Rebus.Correlate.svg)](https://www.nuget.org/packages/Rebus.Correlate/) [![NuGet](https://img.shields.io/nuget/dt/Rebus.Correlate.svg)](https://www.nuget.org/packages/Rebus.Correlate/) | Correlate integration with Rebus. |
 
 ## Correlation ID flow
 
@@ -152,20 +132,9 @@ public class MyHandler : IHandleMessages<MyMessage>
 
 ## More info
 
-See [Correlate](https://github.com/skwasjer/Correlate) documentation for further integration with ASP.NET Core, `IHttpClientFactory` and for other extensions/libraries.
+- [Correlate](https://github.com/skwasjer/Correlate) documentation for further integration with ASP.NET Core, `IHttpClientFactory` and for other extensions/libraries.
+- [Release notes](https://github.com/skwasjer/Rebus.Correlate/releases)
 
-### Supported .NET targets
-- .NET 6.0
-- .NET Standard 2.1/2.0
+### Contributions
 
-### Build requirements
-- Visual Studio 2022
-- .NET 6 SDK
-- .NET 5 SDK
-- .NET Core 3.1 SDK
-
-#### Contributions
-PR's are welcome. Please rebase before submitting, provide test coverage, and ensure the AppVeyor build passes. I will not consider PR's otherwise.
-
-#### Contributors
-- skwas (author/maintainer)
+Please check out the [contribution guidelines](https://github.com/skwasjer/MockHttp/blob/main/CONTRIBUTING.md).
