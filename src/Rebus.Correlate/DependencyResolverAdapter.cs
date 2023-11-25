@@ -7,7 +7,7 @@ namespace Rebus.Correlate;
 /// <summary>
 /// Simple dependency resolver adapter using func for Rebus to resolve Correlate dependencies.
 /// </summary>
-public class DependencyResolverAdapter : IResolutionContext
+public sealed class DependencyResolverAdapter : IResolutionContext
 {
     private readonly Func<Type, object?> _optionalResolve;
 
