@@ -6,9 +6,18 @@
     <RootNamespace>Rebus.Correlate</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageRebusVersion>8.0.2</PackageRebusVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <!-- Testing older dependencies with older SDK. -->
+    <PackageRebusVersion>7.0.0</PackageRebusVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Correlate.DependencyInjection" Version="4.0.0" />
-    <PackageReference Include="Rebus" Version="6.6.5" />
+    <PackageReference Include="Rebus" Version="$(PackageRebusVersion)" />
   </ItemGroup>
 
   <ItemGroup>

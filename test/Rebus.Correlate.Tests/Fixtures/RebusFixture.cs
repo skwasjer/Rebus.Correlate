@@ -16,7 +16,18 @@ public abstract class RebusFixture
     {
         _configureActions.Add(configurer => configurer
             .Transport(t => t.UseInMemoryTransport(new InMemNetwork(), "input"))
-            .Subscriptions(s => s.StoreInMemory(new InMemorySubscriberStore()))
+            .Subscriptions(s =>
+            {
+                try
+                {
+                    s.StoreInMemory(new InMemorySubscriberStore());
+                }
+                catch (InvalidOperationException ex) when (ex.Message.Contains("a primary registration already exists"))
+                {
+                    // Newer Rebus impl. of UseInMemoryTransport() registers a subscription storage provider by default
+                    // in which case we just ignore the exception.
+                }
+            })
             // Route all to input.
             .Routing(r => r.TypeBased().MapFallback("input"))
         );
