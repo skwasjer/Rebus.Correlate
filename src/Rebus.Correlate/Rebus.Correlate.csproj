@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Correlate" Version="5.2.0" />
-    <PackageReference Include="Rebus" Version="7.2.1" />
+    <PackageReference Include="Rebus" Version="8.1.0" />
   </ItemGroup>
 
 </Project>
