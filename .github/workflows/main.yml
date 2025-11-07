@@ -41,8 +41,6 @@ jobs:
       - name: Determine version
         uses: gittools/actions/gitversion/execute@d0139503a9321f76b4a417dfdc8aebcec24decdd #v4.2.0
         id: gitversion
-        with:
-          useConfigFile: true
 
   build:
     needs:
