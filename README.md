@@ -155,14 +155,13 @@ public class MyHandler : IHandleMessages<MyMessage>
 See [Correlate](https://github.com/skwasjer/Correlate) documentation for further integration with ASP.NET Core, `IHttpClientFactory` and for other extensions/libraries.
 
 ### Supported .NET targets
-- .NET 6.0
-- .NET Standard 2.1/2.0
+- .NET 8.0
+- .NET Standard 2.0
 
 ### Build requirements
 - Visual Studio 2022
-- .NET 6 SDK
-- .NET 5 SDK
-- .NET Core 3.1 SDK
+- .NET 9 SDK
+- .NET 8 SDK
 
 #### Contributions
 PR's are welcome. Please rebase before submitting, provide test coverage, and ensure the AppVeyor build passes. I will not consider PR's otherwise.
