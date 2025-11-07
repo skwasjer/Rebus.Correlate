@@ -22,9 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
-      # v5.10.0 of GitVersion has a fix for incorrect versions when building on tag. See https://github.com/GitTools/GitVersion/issues/2838
-      # It appears that the fix then had a regression in a later version, so pinning to v5.10.0.  See https://github.com/GitTools/GitVersion/issues/3351#issuecomment-1403657689
-      GITVERSION: '5.10.0'
+      GITVERSION: '6.0.x'
     outputs:
       version: ${{ steps.gitversion.outputs.fullSemVer }}
       package-version: ${{ steps.gitversion.outputs.fullSemVer }}
@@ -38,12 +36,12 @@ jobs:
           fetch-tags: true
 
       - name: Install GitVersion ${{ env.GITVERSION }}
-        uses: gittools/actions/gitversion/setup@v0.10.2
+        uses: gittools/actions/gitversion/setup@26a89e5dd4fa9ba66a853e04706ba52755ca4057 #v3.1.1
         with:
           versionSpec: ${{ env.GITVERSION }}
 
       - name: Determine version
-        uses: gittools/actions/gitversion/execute@v0.10.2
+        uses: gittools/actions/gitversion/execute@26a89e5dd4fa9ba66a853e04706ba52755ca4057 #v3.1.1
         id: gitversion
         with:
           useConfigFile: true
@@ -60,7 +58,7 @@ jobs:
       msbuild-version-args: ${{ env.msbuild-version-args }}
     steps:
       # Setup
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnet-version }}
 
@@ -73,7 +71,7 @@ jobs:
 
       # NuGet cache
       - name: Restore NuGet global package cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.targets','**/*.props','**/*.csproj') }} # Can't use packages.lock.json yet, because Dependabot does not support it.
@@ -86,7 +84,7 @@ jobs:
       # Build
       - run: dotnet build --no-restore -c Release ${{ env.msbuild-version-args }}
       - name: Upload build artifacts
-        uses: ./.github/actions/upload-artifact
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: |
@@ -100,14 +98,14 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
-        - windows-latest
-        - macos-latest
+          - ubuntu-22.04
+          - windows-latest
+          - macos-13
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       # Setup
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnet-version }}
 
@@ -118,12 +116,15 @@ jobs:
 
       # Restore build artifacts
       - name: Download build artifacts
-        uses: ./.github/actions/download-artifact
+        uses: actions/download-artifact@v4
         with:
           name: build
 
       # Run all tests
       - run: dotnet test --no-restore --no-build -c Release
+        if: matrix.os == 'ubuntu-22.04'
+      - run: dotnet test --no-restore --no-build -c Release --filter Category!=PublicApi
+        if: matrix.os != 'ubuntu-22.04'
 
   pack:
     needs:
@@ -132,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Setup
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnet-version }}
 
@@ -143,7 +144,7 @@ jobs:
 
       # NuGet cache (.NET Framework Reference assemblies are needed for pack)
       - name: Restore NuGet global package cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.targets','**/*.props','**/*.csproj') }} # Can't use packages.lock.json yet, because Dependabot does not support it.
@@ -153,14 +154,14 @@ jobs:
 
       # Restore build artifacts
       - name: Download build artifacts
-        uses: ./.github/actions/download-artifact
+        uses: actions/download-artifact@v4
         with:
           name: build
 
       # Pack
       - run: dotnet pack --no-restore --no-build -c Release ${{ needs.build.outputs.msbuild-version-args }}
       - name: Upload release artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release-${{ needs.determine-version.outputs.package-version }}
           path: |
@@ -179,11 +180,12 @@ jobs:
     steps:
       # Restore release artifacts
       - name: Download release artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: release-${{ needs.determine-version.outputs.package-version }}
 
       - name: push - nuget.org
         env:
           NUGET_SOURCE_URL: https://api.nuget.org/v3/index.json
-        run: dotnet nuget push **/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push **/*.nupkg -k $NUGET_API_KEY -s "$NUGET_SOURCE_URL"
