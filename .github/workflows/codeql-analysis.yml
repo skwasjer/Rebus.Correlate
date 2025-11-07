@@ -24,10 +24,8 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
   dotnet-version: |
+    9.0.x
     8.0.x
-    6.0.x
-    5.0.x
-    3.1.x
 
 jobs:
   analyze:
@@ -48,20 +46,20 @@ jobs:
 
     steps:
       # Setup
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.dotnet-version }}
 
       - run: dotnet --info
 
       # Checkout
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
           # If you wish to specify custom queries, you can do so here or in a config file.
@@ -88,4 +86,4 @@ jobs:
           dotnet build -c Release /p:UseSharedCompilation=false
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v4
