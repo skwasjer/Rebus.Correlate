@@ -72,7 +72,7 @@ public class CorrelateIncomingMessageStepTests
         // Assert
         await _asyncCorrelationManagerMock
             .Received(1)
-            .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnException>());
+            .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnError>());
     }
 
     [Fact]
@@ -88,6 +88,6 @@ public class CorrelateIncomingMessageStepTests
         // Assert
         await _asyncCorrelationManagerMock
             .Received(1)
-            .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnException>());
+            .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnError>());
     }
 }
