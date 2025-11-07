@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net6.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
     <IsTestProject>true</IsTestProject>
     <RootNamespace>Rebus.Correlate</RootNamespace>
   </PropertyGroup>
@@ -10,8 +10,8 @@
     <PackageRebusVersion>8.0.2</PackageRebusVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <!-- Testing older dependencies with older SDK. -->
+  <PropertyGroup Condition="'$(TargetFramework)'=='net9.0'">
+    <!-- Testing older dependency. -->
     <PackageRebusVersion>7.2.1</PackageRebusVersion>
   </PropertyGroup>
 
@@ -27,8 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Rebus.Correlate\Rebus.Correlate.csproj" AdditionalProperties="TargetFramework=net8.0" Condition="'$(TargetFramework)'=='net8.0'" />
-    <ProjectReference Include="..\..\src\Rebus.Correlate\Rebus.Correlate.csproj" AdditionalProperties="TargetFramework=net6.0" Condition="'$(TargetFramework)'=='net6.0'" />
-    <ProjectReference Include="..\..\src\Rebus.Correlate\Rebus.Correlate.csproj" AdditionalProperties="TargetFramework=netstandard2.0" Condition="'$(TargetFramework)'=='net5.0'" />
+    <ProjectReference Include="..\..\src\Rebus.Correlate\Rebus.Correlate.csproj" AdditionalProperties="TargetFramework=netstandard2.0" Condition="'$(TargetFramework)'=='net9.0'" />
   </ItemGroup>
 
 </Project>
