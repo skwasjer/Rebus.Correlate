@@ -18,7 +18,7 @@
 
   <PropertyGroup>
     <!-- Microsoft.Extensions.* -->
-    <PackageVersion_Microsoft_Extensions>8.0.0</PackageVersion_Microsoft_Extensions>
+    <PackageVersion_Microsoft_Extensions>10.0.1</PackageVersion_Microsoft_Extensions>
     <PackageVersion_Microsoft_Extensions Condition="$(TargetFramework.StartsWith('netstandard2')) Or '$(TargetFramework)'=='net9.0'">9.0.0</PackageVersion_Microsoft_Extensions>
   </PropertyGroup>
 
