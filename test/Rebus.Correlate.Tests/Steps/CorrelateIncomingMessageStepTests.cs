@@ -90,4 +90,31 @@ public class CorrelateIncomingMessageStepTests
             .Received(1)
             .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnError>());
     }
+
+    [Fact]
+    public async Task Given_no_deserialized_message_is_available_in_context_yet_it_should_still_use_header_value_from_transport_message()
+    {
+        const string correlationId = nameof(correlationId);
+        const string expectedCorrelationId = correlationId;
+        _messageHeaders.Add(Headers.CorrelationId, correlationId);
+
+        // Builds a context the way it looks when this step runs before DefaultRetryStep (and thus before
+        // DeserializeIncomingMessageStep has run) - i.e. no deserialized Message has been saved to the
+        // context yet, only the raw TransportMessage is available.
+        var txItems = new ConcurrentDictionary<string, object>();
+        ITransactionContext transactionContextMock = Substitute.For<ITransactionContext>();
+        transactionContextMock
+            .Items
+            .Returns(txItems);
+        var transportMessage = new TransportMessage(_messageHeaders, Array.Empty<byte>());
+        var stepContextWithoutDeserializedMessage = new IncomingStepContext(transportMessage, transactionContextMock);
+
+        // Act
+        await _sut.Process(stepContextWithoutDeserializedMessage, _next);
+
+        // Assert
+        await _asyncCorrelationManagerMock
+            .Received(1)
+            .CorrelateAsync(expectedCorrelationId, _next, Arg.Any<OnError>());
+    }
 }
