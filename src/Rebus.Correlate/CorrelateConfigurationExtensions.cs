@@ -7,6 +7,7 @@ using Rebus.Logging;
 using Rebus.Pipeline;
 using Rebus.Pipeline.Receive;
 using Rebus.Pipeline.Send;
+using Rebus.Retry.Simple;
 
 namespace Rebus.Correlate;
 
@@ -127,7 +128,12 @@ public static class CorrelateConfigurationExtensions
             CorrelateIncomingMessageStep incomingStep = ctx.Get<CorrelateIncomingMessageStep>();
             return new PipelineStepInjector(pipeline)
                 .OnSend(outgoingStep, PipelineRelativePosition.Before, typeof(FlowCorrelationIdStep))
-                .OnReceive(incomingStep, PipelineRelativePosition.After, typeof(DeserializeIncomingMessageStep));
+                // Anchored *before* DefaultRetryStep (rather than after DeserializeIncomingMessageStep) so the
+                // ambient CorrelationContext spans the retry strategy's exception handling/logging too. Previously,
+                // the context was torn down (by CorrelateIncomingMessageStep) before the exception ever reached
+                // DefaultRetryStep's catch block, so Rebus' own "Unhandled exception ..." log entries never carried
+                // a correlation ID even though the handler ran with one.
+                .OnReceive(incomingStep, PipelineRelativePosition.Before, typeof(DefaultRetryStep));
         });
 
         return configurer;

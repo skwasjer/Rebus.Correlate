@@ -20,8 +20,12 @@ internal class CorrelateIncomingMessageStep : IIncomingStep
 
     public Task Process(IncomingStepContext context, Func<Task> next)
     {
-        Message message = context.Load<Message>();
-        message.Headers.TryGetValue(Headers.CorrelationId, out string? correlationId);
+        // Read the header off the raw TransportMessage rather than the deserialized Message: this step
+        // now runs before DefaultRetryStep (so the ambient CorrelationContext stays alive for the retry
+        // strategy's own exception logging), which means DeserializeIncomingMessageStep has not run yet
+        // and no Message is available in the context.
+        TransportMessage transportMessage = context.Load<TransportMessage>();
+        transportMessage.Headers.TryGetValue(Headers.CorrelationId, out string? correlationId);
         if (correlationId is not null)
         {
             _logger.Debug("Correlation ID: {CorrelationId}", correlationId);
